@@ -1,4 +1,3 @@
-
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { ArrowRight } from 'lucide-react';
@@ -90,22 +89,7 @@ const Index = () => {
             </motion.div>
           </motion.div>
           
-          {/* Hero image */}
-          <motion.div 
-            className="w-full max-w-5xl mt-20" 
-            initial={{ opacity: 0, y: 40 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, delay: 0.6 }}
-          >
-            <div className="glass-panel rounded-xl overflow-hidden shadow-xl">
-              <img 
-                src="/lovable-uploads/923b217a-5ba0-4bee-9fb9-9a3cfc6a14b8.png" 
-                alt="Techno Clubs Dashboard" 
-                className="w-full h-auto rounded-lg"
-                loading="lazy"
-              />
-            </div>
-          </motion.div>
+          {/* Hero image section removed */}
         </section>
         
         {/* Features section */}
