@@ -24,9 +24,11 @@ import {
   Lock
 } from 'lucide-react';
 import PageTransition from '@/components/PageTransition';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 const AdminPanel = () => {
   const [sidebarExpanded, setSidebarExpanded] = useState(true);
+  const isMobile = useIsMobile();
 
   const toggleSidebar = () => {
     setSidebarExpanded(!sidebarExpanded);
@@ -35,20 +37,20 @@ const AdminPanel = () => {
   return (
     <div className="min-h-screen bg-background">
       <Navbar />
-      <Sidebar isExpanded={sidebarExpanded} toggleSidebar={toggleSidebar} />
+      {!isMobile && <Sidebar isExpanded={sidebarExpanded} toggleSidebar={toggleSidebar} />}
 
       <PageTransition>
-        <main className={`pt-24 transition-all duration-300 ${sidebarExpanded ? 'ml-64' : 'ml-20'}`}>
-          <div className="container mx-auto px-6 py-8">
+        <main className={`pt-24 transition-all duration-300 ${!isMobile && sidebarExpanded ? 'ml-64' : !isMobile && !sidebarExpanded ? 'ml-20' : 'ml-0'}`}>
+          <div className="container mx-auto px-4 sm:px-6 py-6 sm:py-8">
             {/* Header */}
-            <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-8">
+            <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-6 sm:mb-8">
               <motion.div
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.3 }}
               >
-                <h1 className="text-3xl font-bold">Admin Panel</h1>
-                <p className="text-muted-foreground mt-1">Manage portal settings and user permissions</p>
+                <h1 className="text-2xl sm:text-3xl font-bold">Admin Panel</h1>
+                <p className="text-muted-foreground mt-1 text-sm sm:text-base">Manage portal settings and user permissions</p>
               </motion.div>
               
               <motion.div 
@@ -57,9 +59,9 @@ const AdminPanel = () => {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.3, delay: 0.1 }}
               >
-                <Button size="sm" variant="destructive">
+                <Button size={isMobile ? "sm" : "default"} variant="destructive">
                   <Shield className="mr-2 h-4 w-4" />
-                  Administrator Mode
+                  {!isMobile && "Administrator Mode"}
                 </Button>
               </motion.div>
             </div>
@@ -71,67 +73,67 @@ const AdminPanel = () => {
               transition={{ duration: 0.4, delay: 0.2 }}
             >
               <Tabs defaultValue="user-management">
-                <TabsList className="grid grid-cols-3 mb-8">
-                  <TabsTrigger value="user-management" className="flex items-center">
-                    <Users className="mr-2 h-4 w-4" />
-                    User Management
+                <TabsList className="grid grid-cols-3 mb-6 sm:mb-8">
+                  <TabsTrigger value="user-management" className="flex items-center text-xs sm:text-sm">
+                    <Users className="mr-1 sm:mr-2 h-3 w-3 sm:h-4 sm:w-4" />
+                    <span className={isMobile ? "hidden sm:inline" : ""}>User Management</span>
                   </TabsTrigger>
-                  <TabsTrigger value="settings" className="flex items-center">
-                    <Cog className="mr-2 h-4 w-4" />
-                    Settings
+                  <TabsTrigger value="settings" className="flex items-center text-xs sm:text-sm">
+                    <Cog className="mr-1 sm:mr-2 h-3 w-3 sm:h-4 sm:w-4" />
+                    <span className={isMobile ? "hidden sm:inline" : ""}>Settings</span>
                   </TabsTrigger>
-                  <TabsTrigger value="analytics" className="flex items-center">
-                    <BarChart3 className="mr-2 h-4 w-4" />
-                    Analytics
+                  <TabsTrigger value="analytics" className="flex items-center text-xs sm:text-sm">
+                    <BarChart3 className="mr-1 sm:mr-2 h-3 w-3 sm:h-4 sm:w-4" />
+                    <span className={isMobile ? "hidden sm:inline" : ""}>Analytics</span>
                   </TabsTrigger>
                 </TabsList>
                 
                 {/* User Management Tab */}
-                <TabsContent value="user-management" className="space-y-6">
+                <TabsContent value="user-management" className="space-y-4 sm:space-y-6">
                   <Card>
-                    <CardHeader className="pb-3">
-                      <div className="flex justify-between items-center">
+                    <CardHeader className="pb-2 sm:pb-3">
+                      <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center">
                         <div>
-                          <CardTitle>User Management</CardTitle>
-                          <CardDescription>Manage users, roles, and permissions</CardDescription>
+                          <CardTitle className="text-base sm:text-lg">User Management</CardTitle>
+                          <CardDescription className="text-xs sm:text-sm">Manage users, roles, and permissions</CardDescription>
                         </div>
-                        <Button>
-                          <UserPlus className="mr-2 h-4 w-4" />
-                          Add User
+                        <Button size={isMobile ? "sm" : "default"} className="mt-2 sm:mt-0">
+                          <UserPlus className="mr-2 h-3 w-3 sm:h-4 sm:w-4" />
+                          {!isMobile && "Add User"}
                         </Button>
                       </div>
                     </CardHeader>
-                    <CardContent>
-                      <div className="rounded-md border shadow-sm overflow-hidden">
+                    <CardContent className="p-2 sm:p-4">
+                      <div className="rounded-md border shadow-sm overflow-x-auto">
                         <Table>
                           <TableHeader>
                             <TableRow>
-                              <TableHead>Name</TableHead>
-                              <TableHead>Email</TableHead>
-                              <TableHead>Role</TableHead>
-                              <TableHead>Status</TableHead>
-                              <TableHead>Last Active</TableHead>
-                              <TableHead className="text-right">Actions</TableHead>
+                              <TableHead className="text-xs sm:text-sm">Name</TableHead>
+                              <TableHead className="text-xs sm:text-sm hidden sm:table-cell">Email</TableHead>
+                              <TableHead className="text-xs sm:text-sm">Role</TableHead>
+                              <TableHead className="text-xs sm:text-sm hidden sm:table-cell">Status</TableHead>
+                              <TableHead className="text-xs sm:text-sm hidden sm:table-cell">Last Active</TableHead>
+                              <TableHead className="text-xs sm:text-sm text-right">Actions</TableHead>
                             </TableRow>
                           </TableHeader>
                           <TableBody>
                             {users.map((user, index) => (
                               <TableRow key={index}>
-                                <TableCell className="font-medium">{user.name}</TableCell>
-                                <TableCell>{user.email}</TableCell>
-                                <TableCell>{user.role}</TableCell>
-                                <TableCell>
-                                  <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
+                                <TableCell className="text-xs sm:text-sm font-medium">{user.name}</TableCell>
+                                <TableCell className="text-xs sm:text-sm hidden sm:table-cell">{user.email}</TableCell>
+                                <TableCell className="text-xs sm:text-sm">{user.role}</TableCell>
+                                <TableCell className="hidden sm:table-cell">
+                                  <span className={`inline-flex items-center px-1.5 sm:px-2.5 py-0.5 rounded-full text-xs font-medium ${
                                     user.status === 'Active' ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800'
                                   }`}>
                                     {user.status}
                                   </span>
                                 </TableCell>
-                                <TableCell>{user.lastActive}</TableCell>
-                                <TableCell className="text-right">
-                                  <Button variant="ghost" size="sm">Edit</Button>
-                                  <Button variant="ghost" size="sm" className="text-destructive">
-                                    <UserX className="h-4 w-4" />
+                                <TableCell className="text-xs sm:text-sm hidden sm:table-cell">{user.lastActive}</TableCell>
+                                <TableCell className="text-xs sm:text-sm text-right">
+                                  <Button variant="ghost" size="sm" className="h-7 px-2 text-xs">Edit</Button>
+                                  <Button variant="ghost" size="sm" className="h-7 px-2 text-xs text-destructive">
+                                    <UserX className="h-3 w-3 sm:h-4 sm:w-4" />
                                   </Button>
                                 </TableCell>
                               </TableRow>
@@ -144,108 +146,129 @@ const AdminPanel = () => {
                   
                   <Card>
                     <CardHeader>
-                      <CardTitle>Role Permissions</CardTitle>
-                      <CardDescription>Configure access levels for each role</CardDescription>
+                      <CardTitle className="text-base sm:text-lg">Role Permissions</CardTitle>
+                      <CardDescription className="text-xs sm:text-sm">Configure access levels for each role</CardDescription>
                     </CardHeader>
-                    <CardContent>
-                      <div className="rounded-md border shadow-sm overflow-hidden">
+                    <CardContent className="p-2 sm:p-4">
+                      <div className="rounded-md border shadow-sm overflow-x-auto">
                         <Table>
                           <TableHeader>
                             <TableRow>
-                              <TableHead>Permission</TableHead>
-                              <TableHead>Admin</TableHead>
-                              <TableHead>Chapter Leader</TableHead>
-                              <TableHead>Member</TableHead>
-                              <TableHead>Guest</TableHead>
+                              <TableHead className="text-xs sm:text-sm">Permission</TableHead>
+                              <TableHead className="text-xs sm:text-sm">Admin</TableHead>
+                              <TableHead className="text-xs sm:text-sm hidden sm:table-cell">Chapter Leader</TableHead>
+                              <TableHead className="text-xs sm:text-sm">Member</TableHead>
+                              <TableHead className="text-xs sm:text-sm hidden sm:table-cell">Guest</TableHead>
                             </TableRow>
                           </TableHeader>
                           <TableBody>
-                            {permissions.map((permission, index) => (
+                            {permissions.slice(0, isMobile ? 4 : permissions.length).map((permission, index) => (
                               <TableRow key={index}>
-                                <TableCell className="font-medium">{permission.name}</TableCell>
-                                <TableCell>{permission.admin ? "✓" : "✗"}</TableCell>
-                                <TableCell>{permission.chapterLeader ? "✓" : "✗"}</TableCell>
-                                <TableCell>{permission.member ? "✓" : "✗"}</TableCell>
-                                <TableCell>{permission.guest ? "✓" : "✗"}</TableCell>
+                                <TableCell className="text-xs sm:text-sm font-medium">{permission.name}</TableCell>
+                                <TableCell className="text-xs sm:text-sm">{permission.admin ? "✓" : "✗"}</TableCell>
+                                <TableCell className="text-xs sm:text-sm hidden sm:table-cell">{permission.chapterLeader ? "✓" : "✗"}</TableCell>
+                                <TableCell className="text-xs sm:text-sm">{permission.member ? "✓" : "✗"}</TableCell>
+                                <TableCell className="text-xs sm:text-sm hidden sm:table-cell">{permission.guest ? "✓" : "✗"}</TableCell>
                               </TableRow>
                             ))}
                           </TableBody>
                         </Table>
                       </div>
+                      {isMobile && permissions.length > 4 && (
+                        <div className="mt-2 text-center">
+                          <Button variant="link" size="sm" className="text-xs">
+                            View All Permissions
+                          </Button>
+                        </div>
+                      )}
                     </CardContent>
                   </Card>
                 </TabsContent>
                 
                 {/* Settings Tab */}
-                <TabsContent value="settings" className="space-y-6">
+                <TabsContent value="settings" className="space-y-4 sm:space-y-6">
                   <Card>
                     <CardHeader>
-                      <CardTitle>Portal Settings</CardTitle>
-                      <CardDescription>Configure general portal settings</CardDescription>
+                      <CardTitle className="text-base sm:text-lg">Portal Settings</CardTitle>
+                      <CardDescription className="text-xs sm:text-sm">Configure general portal settings</CardDescription>
                     </CardHeader>
-                    <CardContent className="space-y-6">
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        {portalSettings.map((setting, index) => (
-                          <div key={index} className="flex items-start space-x-4">
-                            <div className="bg-primary/10 p-2 rounded">
+                    <CardContent className="space-y-4 sm:space-y-6">
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
+                        {portalSettings.slice(0, isMobile ? 2 : portalSettings.length).map((setting, index) => (
+                          <div key={index} className="flex items-start space-x-3 sm:space-x-4">
+                            <div className="bg-primary/10 p-2 rounded flex-shrink-0">
                               {setting.icon}
                             </div>
                             <div className="flex-1">
-                              <h4 className="font-medium">{setting.name}</h4>
-                              <p className="text-sm text-muted-foreground mt-1">{setting.description}</p>
-                              <Button variant="outline" size="sm" className="mt-2">Configure</Button>
+                              <h4 className="text-sm sm:text-base font-medium">{setting.name}</h4>
+                              <p className="text-xs text-muted-foreground mt-1">{setting.description}</p>
+                              <Button variant="outline" size="sm" className="mt-2 text-xs">Configure</Button>
                             </div>
                           </div>
                         ))}
                       </div>
+                      {isMobile && portalSettings.length > 2 && (
+                        <div className="text-center">
+                          <Button variant="link" size="sm" className="text-xs">
+                            View All Settings
+                          </Button>
+                        </div>
+                      )}
                     </CardContent>
                   </Card>
                   
                   <Card>
                     <CardHeader>
-                      <CardTitle>Credit System Rules</CardTitle>
-                      <CardDescription>Configure how credits are earned and spent</CardDescription>
+                      <CardTitle className="text-base sm:text-lg">Credit System Rules</CardTitle>
+                      <CardDescription className="text-xs sm:text-sm">Configure how credits are earned and spent</CardDescription>
                     </CardHeader>
-                    <CardContent>
-                      <div className="rounded-md border shadow-sm overflow-hidden">
+                    <CardContent className="p-2 sm:p-4">
+                      <div className="rounded-md border shadow-sm overflow-x-auto">
                         <Table>
                           <TableHeader>
                             <TableRow>
-                              <TableHead>Action</TableHead>
-                              <TableHead>Credits</TableHead>
-                              <TableHead>Description</TableHead>
-                              <TableHead className="text-right">Edit</TableHead>
+                              <TableHead className="text-xs sm:text-sm">Action</TableHead>
+                              <TableHead className="text-xs sm:text-sm">Credits</TableHead>
+                              <TableHead className="text-xs sm:text-sm hidden sm:table-cell">Description</TableHead>
+                              <TableHead className="text-xs sm:text-sm text-right">Edit</TableHead>
                             </TableRow>
                           </TableHeader>
                           <TableBody>
-                            {creditRules.map((rule, index) => (
+                            {creditRules.slice(0, isMobile ? 3 : creditRules.length).map((rule, index) => (
                               <TableRow key={index}>
-                                <TableCell className="font-medium">{rule.action}</TableCell>
-                                <TableCell>{rule.credits > 0 ? `+${rule.credits}` : rule.credits}</TableCell>
-                                <TableCell className="text-sm text-muted-foreground">{rule.description}</TableCell>
-                                <TableCell className="text-right">
-                                  <Button variant="ghost" size="sm">Edit</Button>
+                                <TableCell className="text-xs sm:text-sm font-medium">{rule.action}</TableCell>
+                                <TableCell className="text-xs sm:text-sm">{rule.credits > 0 ? `+${rule.credits}` : rule.credits}</TableCell>
+                                <TableCell className="text-xs sm:text-sm text-muted-foreground hidden sm:table-cell">{rule.description}</TableCell>
+                                <TableCell className="text-xs sm:text-sm text-right">
+                                  <Button variant="ghost" size="sm" className="h-7 px-2 text-xs">Edit</Button>
                                 </TableCell>
                               </TableRow>
                             ))}
                           </TableBody>
                         </Table>
                       </div>
+                      {isMobile && creditRules.length > 3 && (
+                        <div className="mt-2 text-center">
+                          <Button variant="link" size="sm" className="text-xs">
+                            View All Rules
+                          </Button>
+                        </div>
+                      )}
                     </CardContent>
                   </Card>
                 </TabsContent>
                 
                 {/* Analytics Tab */}
-                <TabsContent value="analytics" className="space-y-6">
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                    {analyticsCards.map((card, index) => (
+                <TabsContent value="analytics" className="space-y-4 sm:space-y-6">
+                  <div className="grid grid-cols-2 md:grid-cols-3 gap-3 sm:gap-6">
+                    {analyticsCards.slice(0, isMobile ? 4 : analyticsCards.length).map((card, index) => (
                       <Card key={index}>
-                        <CardHeader className="pb-2">
-                          <CardTitle className="text-lg">{card.title}</CardTitle>
+                        <CardHeader className="pb-2 p-3 sm:p-4">
+                          <CardTitle className="text-xs sm:text-base">{card.title}</CardTitle>
                         </CardHeader>
-                        <CardContent>
-                          <div className="text-3xl font-bold">{card.value}</div>
-                          <p className="text-sm text-muted-foreground mt-1 flex items-center">
+                        <CardContent className="pt-0 p-3 sm:p-4">
+                          <div className="text-xl sm:text-3xl font-bold">{card.value}</div>
+                          <p className="text-xs text-muted-foreground mt-1 flex items-center">
                             <span className={`inline-flex items-center ${card.trend === 'up' ? 'text-green-500' : 'text-red-500'}`}>
                               {card.trend === 'up' ? '↑' : '↓'} {card.trendValue}
                             </span>
@@ -256,43 +279,51 @@ const AdminPanel = () => {
                     ))}
                   </div>
                   
+                  {isMobile && analyticsCards.length > 4 && (
+                    <div className="text-center mb-4">
+                      <Button variant="link" size="sm" className="text-xs">
+                        View All Analytics
+                      </Button>
+                    </div>
+                  )}
+                  
                   <Card>
                     <CardHeader>
-                      <CardTitle>Activity By Chapter</CardTitle>
-                      <CardDescription>Event participation and resource usage by chapter</CardDescription>
+                      <CardTitle className="text-base sm:text-lg">Activity By Chapter</CardTitle>
+                      <CardDescription className="text-xs sm:text-sm">Event participation and resource usage by chapter</CardDescription>
                     </CardHeader>
                     <CardContent>
-                      <div className="h-[300px] flex items-center justify-center border rounded-md bg-muted/20">
-                        <p className="text-muted-foreground">Bar chart visualization would be displayed here</p>
+                      <div className="h-[200px] sm:h-[300px] flex items-center justify-center border rounded-md bg-muted/20">
+                        <p className="text-xs sm:text-sm text-muted-foreground">Bar chart visualization would be displayed here</p>
                       </div>
                     </CardContent>
                   </Card>
                   
                   <Card>
                     <CardHeader>
-                      <CardTitle>System Logs</CardTitle>
-                      <CardDescription>Recent system activity and errors</CardDescription>
+                      <CardTitle className="text-base sm:text-lg">System Logs</CardTitle>
+                      <CardDescription className="text-xs sm:text-sm">Recent system activity and errors</CardDescription>
                     </CardHeader>
-                    <CardContent>
-                      <div className="rounded-md border shadow-sm overflow-hidden">
+                    <CardContent className="p-2 sm:p-4">
+                      <div className="rounded-md border shadow-sm overflow-x-auto">
                         <Table>
                           <TableHeader>
                             <TableRow>
-                              <TableHead>Timestamp</TableHead>
-                              <TableHead>User</TableHead>
-                              <TableHead>Action</TableHead>
-                              <TableHead>Status</TableHead>
-                              <TableHead className="text-right">Details</TableHead>
+                              <TableHead className="text-xs sm:text-sm">Timestamp</TableHead>
+                              <TableHead className="text-xs sm:text-sm hidden sm:table-cell">User</TableHead>
+                              <TableHead className="text-xs sm:text-sm">Action</TableHead>
+                              <TableHead className="text-xs sm:text-sm">Status</TableHead>
+                              <TableHead className="text-xs sm:text-sm text-right">Details</TableHead>
                             </TableRow>
                           </TableHeader>
                           <TableBody>
-                            {systemLogs.map((log, index) => (
+                            {systemLogs.slice(0, isMobile ? 3 : systemLogs.length).map((log, index) => (
                               <TableRow key={index}>
-                                <TableCell className="text-sm">{log.timestamp}</TableCell>
-                                <TableCell>{log.user}</TableCell>
-                                <TableCell>{log.action}</TableCell>
+                                <TableCell className="text-xs sm:text-sm">{log.timestamp}</TableCell>
+                                <TableCell className="text-xs sm:text-sm hidden sm:table-cell">{log.user}</TableCell>
+                                <TableCell className="text-xs sm:text-sm">{log.action}</TableCell>
                                 <TableCell>
-                                  <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
+                                  <span className={`inline-flex items-center px-1.5 sm:px-2.5 py-0.5 rounded-full text-xs font-medium ${
                                     log.status === 'Success' ? 'bg-green-100 text-green-800' : 
                                     log.status === 'Warning' ? 'bg-yellow-100 text-yellow-800' : 
                                     'bg-red-100 text-red-800'
@@ -300,14 +331,21 @@ const AdminPanel = () => {
                                     {log.status}
                                   </span>
                                 </TableCell>
-                                <TableCell className="text-right">
-                                  <Button variant="ghost" size="sm">View</Button>
+                                <TableCell className="text-xs sm:text-sm text-right">
+                                  <Button variant="ghost" size="sm" className="h-7 px-2 text-xs">View</Button>
                                 </TableCell>
                               </TableRow>
                             ))}
                           </TableBody>
                         </Table>
                       </div>
+                      {isMobile && systemLogs.length > 3 && (
+                        <div className="mt-2 text-center">
+                          <Button variant="link" size="sm" className="text-xs">
+                            View All Logs
+                          </Button>
+                        </div>
+                      )}
                     </CardContent>
                   </Card>
                 </TabsContent>
