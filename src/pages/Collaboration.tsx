@@ -279,27 +279,27 @@ const Collaboration = () => {
 const messages = [
   {
     sender: 'John',
-    text: 'Hey team, I've started working on the homepage redesign.',
+    text: "Hey team, I've started working on the homepage redesign.",
     time: '10:30 AM'
   },
   {
     sender: 'Sarah',
-    text: 'Great! I'll work on the about page then.',
+    text: "Great! I'll work on the about page then.",
     time: '10:32 AM'
   },
   {
     sender: 'You',
-    text: 'Sounds good. I'll focus on the navigation menu and header.',
+    text: "Sounds good. I'll focus on the navigation menu and header.",
     time: '10:35 AM'
   },
   {
     sender: 'David',
-    text: 'I've uploaded some design references to the files section.',
+    text: "I've uploaded some design references to the files section.",
     time: '10:40 AM'
   },
   {
     sender: 'You',
-    text: 'Thanks David, I'll check them out!',
+    text: "Thanks David, I'll check them out!",
     time: '10:41 AM'
   },
   {
@@ -309,7 +309,7 @@ const messages = [
   },
   {
     sender: 'John',
-    text: 'Tomorrow at 3 PM. I'll send a calendar invite.',
+    text: "Tomorrow at 3 PM. I'll send a calendar invite.",
     time: '10:47 AM'
   }
 ];
