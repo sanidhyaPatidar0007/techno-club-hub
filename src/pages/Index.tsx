@@ -1,3 +1,4 @@
+
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { ArrowRight } from 'lucide-react';
@@ -30,24 +31,24 @@ const Index = () => {
     <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white">
       <Navbar />
       
-      <main className="pt-24 pb-16">
+      <main className="pt-16 sm:pt-24 pb-12 sm:pb-16">
         {/* Hero section */}
-        <section className="container mx-auto px-4 pt-12 md:pt-24 flex flex-col items-center text-center">
+        <section className="container mx-auto px-4 pt-8 sm:pt-12 md:pt-24 flex flex-col items-center text-center">
           <motion.div
-            className="max-w-4xl mx-auto space-y-8"
+            className="max-w-4xl mx-auto space-y-6 sm:space-y-8"
             variants={containerVariants}
             initial="hidden"
             animate="visible"
           >
             <motion.div variants={itemVariants}>
-              <div className="inline-flex items-center px-3 py-1 text-sm font-medium rounded-full bg-blue-100 text-blue-800 mb-6">
+              <div className="inline-flex items-center px-3 py-1 text-xs sm:text-sm font-medium rounded-full bg-blue-100 text-blue-800 mb-4 sm:mb-6">
                 <span className="mr-1.5 h-2 w-2 rounded-full bg-blue-500"></span>
                 <span>Launching Summer 2023</span>
               </div>
             </motion.div>
             
             <motion.h1 
-              className="text-4xl md:text-6xl font-bold tracking-tight"
+              className="text-3xl sm:text-4xl md:text-6xl font-bold tracking-tight"
               variants={itemVariants}
             >
               <span className="block">PLAN</span>
@@ -56,14 +57,14 @@ const Index = () => {
             </motion.h1>
             
             <motion.p 
-              className="mt-6 text-xl text-gray-600 max-w-3xl mx-auto"
+              className="mt-4 sm:mt-6 text-base sm:text-xl text-gray-600 max-w-3xl mx-auto"
               variants={itemVariants}
             >
               The all-in-one platform for tech clubs to manage members, events, resources, and collaboration across multiple chapters.
             </motion.p>
             
             <motion.div 
-              className="mt-10 flex flex-col sm:flex-row gap-4 justify-center"
+              className="mt-6 sm:mt-10 flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center"
               variants={itemVariants}
             >
               <Button 
@@ -93,35 +94,35 @@ const Index = () => {
         </section>
         
         {/* Features section */}
-        <section className="container mx-auto px-4 py-24">
+        <section className="container mx-auto px-4 py-16 sm:py-24">
           <motion.div 
-            className="text-center mb-16"
+            className="text-center mb-12 sm:mb-16"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5 }}
           >
-            <h2 className="text-3xl font-bold">Everything you need to run your tech club</h2>
-            <p className="mt-4 text-xl text-gray-600 max-w-3xl mx-auto">
+            <h2 className="text-2xl sm:text-3xl font-bold">Everything you need to run your tech club</h2>
+            <p className="mt-3 sm:mt-4 text-base sm:text-xl text-gray-600 max-w-3xl mx-auto">
               An integrated platform that simplifies club management across multiple chapters.
             </p>
           </motion.div>
           
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 sm:gap-8">
             {features.map((feature, index) => (
               <motion.div 
                 key={index}
-                className="glass-card rounded-xl p-6 flex flex-col items-center text-center"
+                className="glass-card rounded-xl p-4 sm:p-6 flex flex-col items-center text-center"
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.5, delay: index * 0.1 }}
               >
-                <div className="w-12 h-12 rounded-full bg-blue-100 flex items-center justify-center mb-4">
+                <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-blue-100 flex items-center justify-center mb-3 sm:mb-4">
                   {feature.icon}
                 </div>
-                <h3 className="text-xl font-semibold mb-2">{feature.title}</h3>
-                <p className="text-gray-600">{feature.description}</p>
+                <h3 className="text-lg sm:text-xl font-semibold mb-2">{feature.title}</h3>
+                <p className="text-sm sm:text-base text-gray-600">{feature.description}</p>
               </motion.div>
             ))}
           </div>
@@ -129,23 +130,23 @@ const Index = () => {
       </main>
       
       {/* Footer */}
-      <footer className="bg-gray-100 py-12">
+      <footer className="bg-gray-100 py-8 sm:py-12">
         <div className="container mx-auto px-4">
           <div className="flex flex-col md:flex-row justify-between items-center">
-            <div className="mb-8 md:mb-0">
-              <div className="flex items-center gap-2 font-semibold text-xl">
+            <div className="mb-6 md:mb-0 text-center md:text-left">
+              <div className="flex items-center justify-center md:justify-start gap-2 font-semibold text-xl">
                 <div className="flex items-center justify-center w-8 h-8 rounded-md bg-primary text-white font-bold">
                   TC
                 </div>
                 <span>Techno Clubs</span>
               </div>
-              <p className="mt-2 text-gray-600">© 2023 Techno Clubs. All rights reserved.</p>
+              <p className="mt-2 text-gray-600 text-sm">© 2023 Techno Clubs. All rights reserved.</p>
             </div>
             
-            <div className="flex gap-8">
+            <div className="grid grid-cols-3 gap-6 sm:gap-8 text-center md:text-left">
               <div>
-                <h4 className="font-semibold mb-3">Product</h4>
-                <ul className="space-y-2">
+                <h4 className="font-semibold mb-2 sm:mb-3 text-sm sm:text-base">Product</h4>
+                <ul className="space-y-1 sm:space-y-2 text-xs sm:text-sm">
                   <li><a href="#" className="text-gray-600 hover:text-gray-900">Features</a></li>
                   <li><a href="#" className="text-gray-600 hover:text-gray-900">Pricing</a></li>
                   <li><a href="#" className="text-gray-600 hover:text-gray-900">FAQ</a></li>
@@ -153,8 +154,8 @@ const Index = () => {
               </div>
               
               <div>
-                <h4 className="font-semibold mb-3">Company</h4>
-                <ul className="space-y-2">
+                <h4 className="font-semibold mb-2 sm:mb-3 text-sm sm:text-base">Company</h4>
+                <ul className="space-y-1 sm:space-y-2 text-xs sm:text-sm">
                   <li><a href="#" className="text-gray-600 hover:text-gray-900">About</a></li>
                   <li><a href="#" className="text-gray-600 hover:text-gray-900">Blog</a></li>
                   <li><a href="#" className="text-gray-600 hover:text-gray-900">Contact</a></li>
@@ -162,8 +163,8 @@ const Index = () => {
               </div>
               
               <div>
-                <h4 className="font-semibold mb-3">Legal</h4>
-                <ul className="space-y-2">
+                <h4 className="font-semibold mb-2 sm:mb-3 text-sm sm:text-base">Legal</h4>
+                <ul className="space-y-1 sm:space-y-2 text-xs sm:text-sm">
                   <li><a href="#" className="text-gray-600 hover:text-gray-900">Privacy</a></li>
                   <li><a href="#" className="text-gray-600 hover:text-gray-900">Terms</a></li>
                 </ul>
