@@ -9,33 +9,59 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { ArrowRight, Mail, Lock, Github } from 'lucide-react';
 import { toast } from 'sonner';
 import { motion } from 'framer-motion';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 
 const AuthForm = () => {
   const [isLoading, setIsLoading] = useState(false);
+  const [selectedClub, setSelectedClub] = useState('');
+
+  const handleClubChange = (value: string) => {
+    setSelectedClub(value);
+  };
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
+    
+    if (!selectedClub) {
+      toast.error('Please select your club');
+      return;
+    }
+    
     setIsLoading(true);
     
     // Simulate API call
     setTimeout(() => {
       setIsLoading(false);
-      toast.success('Successfully logged in!');
+      toast.success(`Successfully logged in to ${selectedClub} club!`);
       window.location.href = '/dashboard';
     }, 1500);
   };
 
   const handleSignup = (e: React.FormEvent) => {
     e.preventDefault();
+    
+    if (!selectedClub) {
+      toast.error('Please select your club');
+      return;
+    }
+    
     setIsLoading(true);
     
     // Simulate API call
     setTimeout(() => {
       setIsLoading(false);
-      toast.success('Account created successfully!');
+      toast.success(`Account created successfully for ${selectedClub} club!`);
       window.location.href = '/dashboard';
     }, 1500);
   };
+
+  const clubs = [
+    { id: 'tech', name: 'Tech Innovators' },
+    { id: 'robotics', name: 'Robotics Club' },
+    { id: 'coding', name: 'Coding Masters' },
+    { id: 'design', name: 'Design Squad' },
+    { id: 'cyber', name: 'Cybersecurity Experts' },
+  ];
 
   return (
     <motion.div
@@ -58,6 +84,21 @@ const AuthForm = () => {
             </TabsList>
             <TabsContent value="login" className="space-y-4">
               <form onSubmit={handleLogin} className="space-y-4">
+                <div className="space-y-2">
+                  <Label htmlFor="club">Select Your Club</Label>
+                  <Select onValueChange={handleClubChange}>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select a club" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {clubs.map((club) => (
+                        <SelectItem key={club.id} value={club.id}>
+                          {club.name}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
                 <div className="space-y-2">
                   <Label htmlFor="email">Email</Label>
                   <div className="relative">
@@ -144,6 +185,21 @@ const AuthForm = () => {
             
             <TabsContent value="signup" className="space-y-4">
               <form onSubmit={handleSignup} className="space-y-4">
+                <div className="space-y-2">
+                  <Label htmlFor="signup-club">Select Your Club</Label>
+                  <Select onValueChange={handleClubChange}>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select a club" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {clubs.map((club) => (
+                        <SelectItem key={club.id} value={club.id}>
+                          {club.name}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
                 <div className="space-y-2">
                   <Label htmlFor="signup-name">Full Name</Label>
                   <Input

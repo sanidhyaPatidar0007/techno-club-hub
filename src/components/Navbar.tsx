@@ -1,13 +1,20 @@
 
 import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { SearchIcon, BellIcon, UserCircleIcon, MenuIcon, XIcon } from 'lucide-react';
+import { SearchIcon, BellIcon, UserCircleIcon, MenuIcon, XIcon, UploadIcon } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useMobileSidebar } from '@/hooks/use-mobile';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { toast } from 'sonner';
 
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const location = useLocation();
   const { toggleSidebar, isOpen } = useMobileSidebar();
 
@@ -22,6 +29,32 @@ const Navbar = () => {
 
   const toggleMobileMenu = () => {
     setIsMobileMenuOpen(!isMobileMenuOpen);
+  };
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) {
+      const file = e.target.files[0];
+      setSelectedFile(file);
+      
+      // Create a preview URL
+      const fileUrl = URL.createObjectURL(file);
+      setPreviewUrl(fileUrl);
+    }
+  };
+
+  const handleUpload = () => {
+    if (!selectedFile) {
+      toast.error("Please select an image first");
+      return;
+    }
+
+    // Here you would typically upload to a server
+    // For now we'll just simulate success
+    toast.success("Event image uploaded successfully");
+    
+    // Reset the form
+    setSelectedFile(null);
+    setPreviewUrl(null);
   };
 
   const navItems = [
@@ -59,7 +92,7 @@ const Navbar = () => {
               <div className="flex items-center justify-center w-8 h-8 rounded-md bg-primary text-white font-bold">
                 TC
               </div>
-              <span className="hidden md:inline">Techno Sangam</span>
+              <span className="hidden md:inline">Techno Club</span>
             </Link>
           </div>
 
@@ -79,6 +112,43 @@ const Navbar = () => {
           </nav>
 
           <div className="flex items-center gap-2">
+            <Dialog>
+              <DialogTrigger asChild>
+                <button className="p-2 rounded-full text-gray-500 hover:text-gray-700 hover:bg-gray-100 transition-colors">
+                  <UploadIcon className="w-5 h-5" />
+                </button>
+              </DialogTrigger>
+              <DialogContent className="sm:max-w-[425px]">
+                <DialogHeader>
+                  <DialogTitle>Upload Event Image</DialogTitle>
+                </DialogHeader>
+                <div className="grid gap-4 py-4">
+                  <div className="grid gap-2">
+                    <Label htmlFor="event-image">Event Image</Label>
+                    <Input 
+                      id="event-image" 
+                      type="file" 
+                      accept="image/*" 
+                      onChange={handleFileChange}
+                    />
+                  </div>
+                  
+                  {previewUrl && (
+                    <div className="mt-4">
+                      <img 
+                        src={previewUrl} 
+                        alt="Preview" 
+                        className="rounded-md max-h-[200px] mx-auto"
+                      />
+                    </div>
+                  )}
+                  
+                  <Button type="button" onClick={handleUpload} disabled={!selectedFile}>
+                    Upload Image
+                  </Button>
+                </div>
+              </DialogContent>
+            </Dialog>
             <button className="p-2 rounded-full text-gray-500 hover:text-gray-700 hover:bg-gray-100 transition-colors">
               <SearchIcon className="w-5 h-5" />
             </button>

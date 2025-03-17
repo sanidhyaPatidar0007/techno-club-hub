@@ -1,5 +1,6 @@
 
 import * as React from "react"
+import { useLocation } from "react-router-dom"
 
 const MOBILE_BREAKPOINT = 768
 
@@ -28,6 +29,7 @@ export function useIsMobile() {
 export function useMobileSidebar() {
   const [isOpen, setIsOpen] = React.useState(false)
   const isMobile = useIsMobile()
+  const location = useLocation()
   
   const toggleSidebar = React.useCallback(() => {
     setIsOpen(prev => !prev)
@@ -43,6 +45,13 @@ export function useMobileSidebar() {
       setIsOpen(false)
     }
   }, [isMobile])
+  
+  // Close sidebar on route change in mobile view
+  React.useEffect(() => {
+    if (isMobile) {
+      closeSidebar()
+    }
+  }, [location.pathname, isMobile, closeSidebar])
   
   return {
     isOpen: isOpen && isMobile,
