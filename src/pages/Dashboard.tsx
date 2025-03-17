@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
@@ -20,23 +19,33 @@ import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Progress } from '@/components/ui/progress';
 import PageTransition from '@/components/PageTransition';
-import { useIsMobile } from '@/hooks/use-mobile';
+import { useIsMobile, useMobileSidebar } from '@/hooks/use-mobile';
 
 const Dashboard = () => {
   const [sidebarExpanded, setSidebarExpanded] = useState(true);
   const isMobile = useIsMobile();
+  const { isOpen } = useMobileSidebar();
 
   const toggleSidebar = () => {
     setSidebarExpanded(!sidebarExpanded);
   };
 
+  // Determine if sidebar should be shown
+  const showSidebar = isMobile ? isOpen : true;
+  // Determine sidebar width class
+  const mainClass = !isMobile && sidebarExpanded 
+    ? 'ml-64' 
+    : !isMobile && !sidebarExpanded 
+      ? 'ml-20' 
+      : 'ml-0';
+
   return (
     <div className="min-h-screen bg-background">
       <Navbar />
-      {!isMobile && <Sidebar isExpanded={sidebarExpanded} toggleSidebar={toggleSidebar} />}
+      {showSidebar && <Sidebar isExpanded={sidebarExpanded} toggleSidebar={toggleSidebar} />}
 
       <PageTransition>
-        <main className={`pt-24 transition-all duration-300 ${!isMobile && sidebarExpanded ? 'ml-64' : !isMobile && !sidebarExpanded ? 'ml-20' : 'ml-0'}`}>
+        <main className={`pt-24 transition-all duration-300 ${mainClass}`}>
           <div className="container mx-auto px-4 sm:px-6 py-6 sm:py-8">
             {/* Welcome Header */}
             <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-6 sm:mb-8">
@@ -45,7 +54,7 @@ const Dashboard = () => {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.3 }}
               >
-                <h1 className="text-2xl sm:text-3xl font-bold">Welcome back, Jason</h1>
+                <h1 className="text-2xl sm:text-3xl font-bold">Welcome back, Rajesh</h1>
                 <p className="text-muted-foreground mt-1 text-sm sm:text-base">Here's what's happening with your tech clubs today.</p>
               </motion.div>
               
@@ -304,7 +313,7 @@ const Dashboard = () => {
   );
 };
 
-// Sample data
+// Sample data with Indian names
 const stats = [
   {
     title: 'Total Members',
@@ -373,32 +382,32 @@ const upcomingEvents = [
 const activities = [
   {
     user: {
-      name: 'Emily Chen',
-      initials: 'EC'
+      name: 'Priya Sharma',
+      initials: 'PS'
     },
     action: 'uploaded a new resource: "React Hooks Guide"',
     time: '10 minutes ago'
   },
   {
     user: {
-      name: 'Alex Johnson',
-      initials: 'AJ'
+      name: 'Arjun Patel',
+      initials: 'AP'
     },
     action: 'created a new event: "Web Development Workshop"',
     time: '1 hour ago'
   },
   {
     user: {
-      name: 'Sara Miller',
-      initials: 'SM'
+      name: 'Sneha Gupta',
+      initials: 'SG'
     },
     action: 'commented on "Project Planning Meeting"',
     time: '2 hours ago'
   },
   {
     user: {
-      name: 'David Lee',
-      initials: 'DL'
+      name: 'Vikram Desai',
+      initials: 'VD'
     },
     action: 'earned 50 credits for organizing the Tech Talk',
     time: '3 hours ago'

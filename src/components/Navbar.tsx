@@ -1,13 +1,15 @@
 
 import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { SearchIcon, BellIcon, UserCircleIcon, MenuIcon } from 'lucide-react';
+import { SearchIcon, BellIcon, UserCircleIcon, MenuIcon, XIcon } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { useMobileSidebar } from '@/hooks/use-mobile';
 
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const location = useLocation();
+  const { toggleSidebar, isOpen } = useMobileSidebar();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -44,6 +46,12 @@ const Navbar = () => {
       <div className="container mx-auto px-4 md:px-6">
         <div className="flex h-16 items-center justify-between">
           <div className="flex items-center">
+            <button 
+              className="md:hidden mr-2 p-2 rounded-full text-gray-500 hover:text-gray-700 hover:bg-gray-100 transition-colors"
+              onClick={toggleSidebar}
+            >
+              <MenuIcon className="w-5 h-5" />
+            </button>
             <Link 
               to="/" 
               className="flex items-center gap-2 font-semibold text-xl"
@@ -51,7 +59,7 @@ const Navbar = () => {
               <div className="flex items-center justify-center w-8 h-8 rounded-md bg-primary text-white font-bold">
                 TC
               </div>
-              <span className="hidden md:inline">Techno Clubs</span>
+              <span className="hidden md:inline">Techno Sangam</span>
             </Link>
           </div>
 
@@ -110,9 +118,7 @@ const Navbar = () => {
             className="p-2 rounded-full text-gray-500 hover:text-gray-700 hover:bg-gray-100 transition-colors"
             onClick={toggleMobileMenu}
           >
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-            </svg>
+            <XIcon className="h-6 w-6" />
           </button>
         </div>
         <div className="flex flex-col items-center gap-4 p-4">

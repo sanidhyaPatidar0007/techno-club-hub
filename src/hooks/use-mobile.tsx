@@ -23,3 +23,24 @@ export function useIsMobile() {
 
   return isMobile === undefined ? false : isMobile
 }
+
+// Sidebar management for mobile
+export function useMobileSidebar() {
+  const [isOpen, setIsOpen] = React.useState(false)
+  const isMobile = useIsMobile()
+  
+  const toggleSidebar = React.useCallback(() => {
+    setIsOpen(prev => !prev)
+  }, [])
+  
+  const closeSidebar = React.useCallback(() => {
+    setIsOpen(false)
+  }, [])
+  
+  return {
+    isOpen: isOpen && isMobile,
+    isMobile,
+    toggleSidebar,
+    closeSidebar
+  }
+}
