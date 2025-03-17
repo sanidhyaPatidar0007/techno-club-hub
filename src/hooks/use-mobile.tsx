@@ -43,6 +43,9 @@ export function useMobileSidebar() {
   React.useEffect(() => {
     if (isMobile) {
       setIsOpen(false)
+    } else {
+      // When switching to desktop, ensure sidebar is open
+      setIsOpen(true)
     }
   }, [isMobile])
   
@@ -54,7 +57,7 @@ export function useMobileSidebar() {
   }, [location.pathname, isMobile, closeSidebar])
   
   return {
-    isOpen: isOpen && isMobile,
+    isOpen: isMobile ? isOpen : true,
     isMobile,
     toggleSidebar,
     closeSidebar

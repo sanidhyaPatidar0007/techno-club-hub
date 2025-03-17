@@ -1,26 +1,16 @@
-
 import { useState } from 'react';
 import { motion } from 'framer-motion';
-import Navbar from '@/components/Navbar';
-import Sidebar from '@/components/Sidebar';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Calendar, Clock, MapPin, PlusCircle, Users, Image as ImageIcon, Upload } from 'lucide-react';
-import PageTransition from '@/components/PageTransition';
-import { useMobileSidebar } from '@/hooks/use-mobile';
+import PageLayout from '@/components/PageLayout';
 import { Input } from '@/components/ui/input';
 import { toast } from 'sonner';
 
 const EventManagement = () => {
-  const [sidebarExpanded, setSidebarExpanded] = useState(true);
-  const { isMobile, closeSidebar } = useMobileSidebar();
   const [selectedEvent, setSelectedEvent] = useState(null);
   const [eventPhoto, setEventPhoto] = useState(null);
-
-  const toggleSidebar = () => {
-    setSidebarExpanded(!sidebarExpanded);
-  };
 
   const handleFileChange = (event) => {
     const file = event.target.files[0];
@@ -41,164 +31,138 @@ const EventManagement = () => {
 
   const viewEventDetails = (event) => {
     setSelectedEvent(event);
-    if (isMobile) {
-      closeSidebar();
-    }
   };
 
-  return (
-    <div className="min-h-screen bg-background bg-[url('https://images.unsplash.com/photo-1506744038136-46273834b3fb?ixlib=rb-1.2.1&auto=format&fit=crop&w=1920&q=10')] bg-fixed bg-no-repeat bg-cover bg-opacity-10">
-      <div className="min-h-screen bg-background/85 backdrop-blur-sm">
-        <Navbar />
-        <Sidebar isExpanded={sidebarExpanded} toggleSidebar={toggleSidebar} />
+  const actionButtons = (
+    <Button size="sm">
+      <PlusCircle className="mr-2 h-4 w-4" />
+      Create Event
+    </Button>
+  );
 
-        <PageTransition>
-          <main className={`pt-24 transition-all duration-300 ${isMobile ? 'ml-0' : (sidebarExpanded ? 'ml-64' : 'ml-20')}`}>
-            <div className="container mx-auto px-4 md:px-6 py-8">
-              {/* Header */}
-              <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-8">
-                <motion.div
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.3 }}
-                >
-                  <h1 className="text-2xl md:text-3xl font-bold">Event Management</h1>
-                  <p className="text-muted-foreground mt-1">Plan, schedule, and manage your club events</p>
-                </motion.div>
-                
-                <motion.div 
-                  className="flex items-center mt-4 md:mt-0 gap-3"
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.3, delay: 0.1 }}
-                >
-                  <Button size="sm">
-                    <PlusCircle className="mr-2 h-4 w-4" />
-                    Create Event
-                  </Button>
-                </motion.div>
-              </div>
-              
-              {selectedEvent ? (
-                <EventDetails 
-                  event={selectedEvent} 
-                  onBack={() => setSelectedEvent(null)} 
-                  eventPhoto={eventPhoto}
-                  onPhotoUpload={handleFileChange}
-                />
-              ) : (
-                <>
-                  {/* Upcoming Events */}
-                  <motion.div 
-                    className="mb-8"
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.4, delay: 0.2 }}
-                  >
-                    <h2 className="text-xl font-semibold mb-4">Upcoming Events</h2>
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                      {upcomingEvents.map((event, index) => (
-                        <Card key={index} className="overflow-hidden hover:shadow-md transition-shadow bg-white/90 backdrop-blur-sm">
-                          <div className={`w-full h-2 ${
-                            event.type === 'Workshop' ? 'bg-purple-500' : 
-                            event.type === 'Meeting' ? 'bg-blue-500' : 
-                            'bg-green-500'
-                          }`}></div>
-                          <CardHeader className="pb-2">
-                            <div className="flex justify-between items-start">
-                              <CardTitle className="text-lg">{event.title}</CardTitle>
-                              <Badge variant={
-                                event.type === 'Workshop' ? 'secondary' : 
-                                event.type === 'Meeting' ? 'default' : 
-                                'outline'
-                              }>
-                                {event.type}
-                              </Badge>
-                            </div>
-                          </CardHeader>
-                          <CardContent>
-                            <div className="space-y-3">
-                              <div className="flex items-center text-sm text-muted-foreground">
-                                <Calendar className="h-4 w-4 mr-2" />
-                                <span>{event.date}</span>
-                              </div>
-                              <div className="flex items-center text-sm text-muted-foreground">
-                                <Clock className="h-4 w-4 mr-2" />
-                                <span>{event.time}</span>
-                              </div>
-                              <div className="flex items-center text-sm text-muted-foreground">
-                                <MapPin className="h-4 w-4 mr-2" />
-                                <span>{event.location}</span>
-                              </div>
-                              <div className="flex items-center text-sm text-muted-foreground">
-                                <Users className="h-4 w-4 mr-2" />
-                                <span>{event.attendees} attendees</span>
-                              </div>
-                              <div className="pt-2">
-                                <Button 
-                                  variant="outline" 
-                                  size="sm" 
-                                  className="w-full"
-                                  onClick={() => viewEventDetails(event)}
-                                >
-                                  View Details
-                                </Button>
-                              </div>
-                            </div>
-                          </CardContent>
-                        </Card>
-                      ))}
+  return (
+    <PageLayout 
+      title="Event Management" 
+      description="Plan, schedule, and manage your club events"
+      backgroundImage="https://images.unsplash.com/photo-1498050108023-c5249f4df085?ixlib=rb-1.2.1&auto=format&fit=crop&w=1920&q=10"
+      actions={actionButtons}
+    >
+      {selectedEvent ? (
+        <EventDetails 
+          event={selectedEvent} 
+          onBack={() => setSelectedEvent(null)} 
+          eventPhoto={eventPhoto}
+          onPhotoUpload={handleFileChange}
+        />
+      ) : (
+        <>
+          {/* Upcoming Events */}
+          <motion.div 
+            className="mb-8"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.4, delay: 0.2 }}
+          >
+            <h2 className="text-xl font-semibold mb-4">Upcoming Events</h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {upcomingEvents.map((event, index) => (
+                <Card key={index} className="overflow-hidden hover:shadow-md transition-shadow bg-white/90 backdrop-blur-sm">
+                  <div className={`w-full h-2 ${
+                    event.type === 'Workshop' ? 'bg-purple-500' : 
+                    event.type === 'Meeting' ? 'bg-blue-500' : 
+                    'bg-green-500'
+                  }`}></div>
+                  <CardHeader className="pb-2">
+                    <div className="flex justify-between items-start">
+                      <CardTitle className="text-lg">{event.title}</CardTitle>
+                      <Badge variant={
+                        event.type === 'Workshop' ? 'secondary' : 
+                        event.type === 'Meeting' ? 'default' : 
+                        'outline'
+                      }>
+                        {event.type}
+                      </Badge>
                     </div>
-                  </motion.div>
-                  
-                  {/* Past Events */}
-                  <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.4, delay: 0.3 }}
-                  >
-                    <h2 className="text-xl font-semibold mb-4">Past Events</h2>
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                      {pastEvents.map((event, index) => (
-                        <Card key={index} className="overflow-hidden opacity-80 hover:opacity-100 transition-opacity bg-white/80 backdrop-blur-sm">
-                          <div className={`w-full h-2 ${
-                            event.type === 'Workshop' ? 'bg-purple-500' : 
-                            event.type === 'Meeting' ? 'bg-blue-500' : 
-                            'bg-green-500'
-                          }`}></div>
-                          <CardHeader className="pb-2">
-                            <div className="flex justify-between items-start">
-                              <CardTitle className="text-lg">{event.title}</CardTitle>
-                              <Badge variant="outline">{event.type}</Badge>
-                            </div>
-                          </CardHeader>
-                          <CardContent>
-                            <div className="space-y-3">
-                              <div className="flex items-center text-sm text-muted-foreground">
-                                <Calendar className="h-4 w-4 mr-2" />
-                                <span>{event.date}</span>
-                              </div>
-                              <div className="flex items-center text-sm text-muted-foreground">
-                                <Users className="h-4 w-4 mr-2" />
-                                <span>{event.attendees} attended</span>
-                              </div>
-                              <div className="pt-2 flex gap-2">
-                                <Button variant="outline" size="sm" className="flex-1">Analytics</Button>
-                                <Button variant="outline" size="sm" className="flex-1">Feedback</Button>
-                              </div>
-                            </div>
-                          </CardContent>
-                        </Card>
-                      ))}
+                  </CardHeader>
+                  <CardContent>
+                    <div className="space-y-3">
+                      <div className="flex items-center text-sm text-muted-foreground">
+                        <Calendar className="h-4 w-4 mr-2" />
+                        <span>{event.date}</span>
+                      </div>
+                      <div className="flex items-center text-sm text-muted-foreground">
+                        <Clock className="h-4 w-4 mr-2" />
+                        <span>{event.time}</span>
+                      </div>
+                      <div className="flex items-center text-sm text-muted-foreground">
+                        <MapPin className="h-4 w-4 mr-2" />
+                        <span>{event.location}</span>
+                      </div>
+                      <div className="flex items-center text-sm text-muted-foreground">
+                        <Users className="h-4 w-4 mr-2" />
+                        <span>{event.attendees} attendees</span>
+                      </div>
+                      <div className="pt-2">
+                        <Button 
+                          variant="outline" 
+                          size="sm" 
+                          className="w-full"
+                          onClick={() => viewEventDetails(event)}
+                        >
+                          View Details
+                        </Button>
+                      </div>
                     </div>
-                  </motion.div>
-                </>
-              )}
+                  </CardContent>
+                </Card>
+              ))}
             </div>
-          </main>
-        </PageTransition>
-      </div>
-    </div>
+          </motion.div>
+                  
+          {/* Past Events */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.4, delay: 0.3 }}
+          >
+            <h2 className="text-xl font-semibold mb-4">Past Events</h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {pastEvents.map((event, index) => (
+                <Card key={index} className="overflow-hidden opacity-80 hover:opacity-100 transition-opacity bg-white/80 backdrop-blur-sm">
+                  <div className={`w-full h-2 ${
+                    event.type === 'Workshop' ? 'bg-purple-500' : 
+                    event.type === 'Meeting' ? 'bg-blue-500' : 
+                    'bg-green-500'
+                  }`}></div>
+                  <CardHeader className="pb-2">
+                    <div className="flex justify-between items-start">
+                      <CardTitle className="text-lg">{event.title}</CardTitle>
+                      <Badge variant="outline">{event.type}</Badge>
+                    </div>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="space-y-3">
+                      <div className="flex items-center text-sm text-muted-foreground">
+                        <Calendar className="h-4 w-4 mr-2" />
+                        <span>{event.date}</span>
+                      </div>
+                      <div className="flex items-center text-sm text-muted-foreground">
+                        <Users className="h-4 w-4 mr-2" />
+                        <span>{event.attendees} attended</span>
+                      </div>
+                      <div className="pt-2 flex gap-2">
+                        <Button variant="outline" size="sm" className="flex-1">Analytics</Button>
+                        <Button variant="outline" size="sm" className="flex-1">Feedback</Button>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          </motion.div>
+        </>
+      )}
+    </PageLayout>
   );
 };
 
@@ -372,3 +336,4 @@ const pastEvents = [
 ];
 
 export default EventManagement;
+

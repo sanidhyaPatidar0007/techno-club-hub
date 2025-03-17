@@ -1,285 +1,289 @@
 
-import { useState } from 'react';
 import { motion } from 'framer-motion';
-import Navbar from '@/components/Navbar';
-import Sidebar from '@/components/Sidebar';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Progress } from '@/components/ui/progress';
-import { Avatar, AvatarFallback } from '@/components/ui/avatar';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { BarChart, Trophy, TrendingUp, History } from 'lucide-react';
-import PageTransition from '@/components/PageTransition';
+import { Progress } from '@/components/ui/progress';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { TrendingUp, Award, Clock, Plus, ArrowUpRight } from 'lucide-react';
+import PageLayout from '@/components/PageLayout';
 
 const CreditSystem = () => {
-  const [sidebarExpanded, setSidebarExpanded] = useState(true);
-
-  const toggleSidebar = () => {
-    setSidebarExpanded(!sidebarExpanded);
-  };
+  const actionButtons = (
+    <Button size="sm">
+      <Plus className="mr-2 h-4 w-4" />
+      Create Challenge
+    </Button>
+  );
 
   return (
-    <div className="min-h-screen bg-background">
-      <Navbar />
-      <Sidebar isExpanded={sidebarExpanded} toggleSidebar={toggleSidebar} />
-
-      <PageTransition>
-        <main className={`pt-24 transition-all duration-300 ${sidebarExpanded ? 'ml-64' : 'ml-20'}`}>
-          <div className="container mx-auto px-6 py-8">
-            {/* Header */}
-            <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-8">
-              <motion.div
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.3 }}
-              >
-                <h1 className="text-3xl font-bold">Credit System</h1>
-                <p className="text-muted-foreground mt-1">Track and reward member contributions</p>
-              </motion.div>
-              
-              <motion.div 
-                className="flex items-center mt-4 md:mt-0 gap-3"
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.3, delay: 0.1 }}
-              >
-                <Button size="sm" variant="outline">
-                  <History className="mr-2 h-4 w-4" />
-                  History
-                </Button>
-                <Button size="sm">
-                  <BarChart className="mr-2 h-4 w-4" />
-                  Analytics
-                </Button>
-              </motion.div>
-            </div>
-            
-            {/* Your Credits */}
-            <motion.div 
-              className="mb-8"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.4, delay: 0.2 }}
-            >
-              <Card>
-                <CardHeader className="pb-2">
-                  <CardTitle>Your Credits</CardTitle>
-                  <CardDescription>Track your progress towards the next tier</CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <div className="flex flex-col md:flex-row md:items-center gap-6">
-                    <div className="flex-1">
-                      <div className="flex justify-between items-center mb-2">
-                        <div>
-                          <span className="text-3xl font-bold">450</span>
-                          <span className="text-muted-foreground ml-2">credits</span>
-                        </div>
-                        <Badge className="bg-blue-500">Silver Tier</Badge>
-                      </div>
-                      
-                      <div className="space-y-4">
-                        <div>
-                          <div className="flex justify-between text-sm mb-1">
-                            <span>Progress to Gold Tier</span>
-                            <span>450 / 800</span>
-                          </div>
-                          <Progress value={56} className="h-2" />
-                        </div>
-                        
-                        <p className="text-sm text-muted-foreground">Earn 350 more credits to reach Gold Tier and unlock premium resources.</p>
-                      </div>
-                    </div>
-                    
-                    <div className="md:w-72 space-y-4">
-                      <h4 className="font-medium">Recent Activity</h4>
-                      
-                      {recentActivity.map((activity, index) => (
-                        <div key={index} className="flex items-center text-sm">
-                          <div className={`w-8 h-8 rounded-full flex items-center justify-center mr-3 ${
-                            activity.change > 0 ? 'bg-green-100 text-green-600' : 'bg-red-100 text-red-600'
-                          }`}>
-                            {activity.change > 0 ? '+' : ''}{activity.change}
-                          </div>
-                          <div>
-                            <p className="font-medium">{activity.description}</p>
-                            <p className="text-xs text-muted-foreground">{activity.date}</p>
-                          </div>
-                        </div>
-                      ))}
-                    </div>
+    <PageLayout 
+      title="Credit System" 
+      description="Track your credits and unlock rewards"
+      backgroundImage="https://images.unsplash.com/photo-1434494878577-86c23bcb06b9?ixlib=rb-1.2.1&auto=format&fit=crop&w=1920&q=10"
+      actions={actionButtons}
+    >
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+        <motion.div 
+          className="col-span-1 md:col-span-2"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.3 }}
+        >
+          <Card className="h-full">
+            <CardHeader>
+              <CardTitle>Your Credit Progress</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-6">
+                <div>
+                  <div className="flex justify-between items-center mb-2">
+                    <span className="text-sm font-medium">Level Progress</span>
+                    <span className="text-sm font-medium">450 / 1000</span>
                   </div>
-                </CardContent>
-              </Card>
-            </motion.div>
-            
-            {/* Leaderboard */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.4, delay: 0.3 }}
-              className="mb-8"
-            >
-              <div className="flex items-center justify-between mb-4">
-                <h2 className="text-xl font-semibold">Leaderboard</h2>
-                <Button variant="outline" size="sm">View All</Button>
+                  <Progress value={45} className="h-2" />
+                  <div className="flex justify-between text-xs text-muted-foreground mt-1">
+                    <span>Gold membership at 1000 credits</span>
+                    <span>45% complete</span>
+                  </div>
+                </div>
+                
+                <div className="flex flex-wrap gap-4">
+                  <div className="flex-1 min-w-[200px] p-4 bg-blue-50 rounded-lg">
+                    <div className="flex items-center gap-2 mb-2">
+                      <TrendingUp className="h-5 w-5 text-blue-600" />
+                      <span className="font-medium">Total Credits</span>
+                    </div>
+                    <div className="text-2xl font-bold text-blue-600">450</div>
+                    <div className="text-xs text-blue-600 mt-1">+50 last month</div>
+                  </div>
+                  
+                  <div className="flex-1 min-w-[200px] p-4 bg-purple-50 rounded-lg">
+                    <div className="flex items-center gap-2 mb-2">
+                      <Award className="h-5 w-5 text-purple-600" />
+                      <span className="font-medium">Current Tier</span>
+                    </div>
+                    <div className="text-2xl font-bold text-purple-600">Silver</div>
+                    <div className="text-xs text-purple-600 mt-1">550 more for Gold</div>
+                  </div>
+                </div>
               </div>
-              
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {topMembers.map((member, index) => (
-                  <Card key={index} className="overflow-hidden hover:shadow-md transition-shadow">
-                    <div className={`w-full h-1 ${
-                      index === 0 ? 'bg-yellow-400' : 
-                      index === 1 ? 'bg-gray-400' : 
-                      index === 2 ? 'bg-amber-600' : 
-                      'bg-blue-400'
-                    }`}></div>
-                    <CardContent className="pt-6">
+            </CardContent>
+          </Card>
+        </motion.div>
+        
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.3, delay: 0.1 }}
+        >
+          <Card className="h-full">
+            <CardHeader>
+              <CardTitle>Quick Actions</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-4">
+                <Button className="w-full justify-between" variant="outline">
+                  <span className="flex items-center">
+                    <Plus className="mr-2 h-4 w-4" />
+                    Claim Credits
+                  </span>
+                  <ArrowUpRight className="h-4 w-4" />
+                </Button>
+                
+                <Button className="w-full justify-between" variant="outline">
+                  <span className="flex items-center">
+                    <Award className="mr-2 h-4 w-4" />
+                    View Rewards
+                  </span>
+                  <ArrowUpRight className="h-4 w-4" />
+                </Button>
+                
+                <Button className="w-full justify-between" variant="outline">
+                  <span className="flex items-center">
+                    <Clock className="mr-2 h-4 w-4" />
+                    Credit History
+                  </span>
+                  <ArrowUpRight className="h-4 w-4" />
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
+        </motion.div>
+      </div>
+      
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.3, delay: 0.2 }}
+      >
+        <Tabs defaultValue="opportunities">
+          <TabsList className="mb-4">
+            <TabsTrigger value="opportunities">Credit Opportunities</TabsTrigger>
+            <TabsTrigger value="history">Recent History</TabsTrigger>
+            <TabsTrigger value="leaderboard">Leaderboard</TabsTrigger>
+          </TabsList>
+          
+          <TabsContent value="opportunities" className="space-y-4">
+            <Card>
+              <CardContent className="pt-6">
+                <div className="space-y-4">
+                  {creditOpportunities.map((opportunity, index) => (
+                    <div key={index} className="flex justify-between items-center p-3 border rounded-lg hover:bg-gray-50 transition-colors">
+                      <div>
+                        <h3 className="font-medium">{opportunity.title}</h3>
+                        <p className="text-sm text-muted-foreground">{opportunity.description}</p>
+                        <div className="flex items-center gap-2 mt-1">
+                          <Badge variant="outline">{opportunity.category}</Badge>
+                          <span className="text-xs text-muted-foreground">{opportunity.deadline}</span>
+                        </div>
+                      </div>
+                      <div className="text-right">
+                        <div className="font-bold text-primary">{opportunity.credits} credits</div>
+                        <Button size="sm" variant="outline" className="mt-2">Details</Button>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+          </TabsContent>
+          
+          <TabsContent value="history">
+            <Card>
+              <CardContent className="pt-6">
+                <div className="space-y-4">
+                  {creditHistory.map((item, index) => (
+                    <div key={index} className="flex justify-between items-center p-3 border rounded-lg">
+                      <div>
+                        <h3 className="font-medium">{item.description}</h3>
+                        <p className="text-xs text-muted-foreground">{item.date}</p>
+                      </div>
+                      <div className={`font-bold ${item.amount > 0 ? 'text-green-600' : 'text-red-600'}`}>
+                        {item.amount > 0 ? `+${item.amount}` : item.amount} credits
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+          </TabsContent>
+          
+          <TabsContent value="leaderboard">
+            <Card>
+              <CardContent className="pt-6">
+                <div className="space-y-4">
+                  {leaderboard.map((member, index) => (
+                    <div key={index} className="flex justify-between items-center p-3 border rounded-lg">
                       <div className="flex items-center">
-                        <div className="mr-4 relative">
-                          <Avatar className="h-14 w-14 border-2 border-background">
-                            <AvatarFallback className="text-lg bg-primary text-primary-foreground">
-                              {member.name.split(' ').map(n => n[0]).join('')}
-                            </AvatarFallback>
-                          </Avatar>
-                          <div className="absolute -top-3 -left-3 flex items-center justify-center w-6 h-6 rounded-full bg-background text-primary-foreground text-xs font-semibold border border-primary">
-                            {index + 1}
-                          </div>
+                        <div className="w-8 h-8 flex items-center justify-center bg-primary text-primary-foreground rounded-full font-bold mr-3">
+                          {index + 1}
                         </div>
-                        
                         <div>
-                          <h3 className="font-semibold">{member.name}</h3>
-                          <div className="flex items-center mt-1">
-                            <Trophy className="h-4 w-4 text-yellow-500 mr-1" />
-                            <span className="text-sm font-medium">{member.credits} credits</span>
-                          </div>
-                          <div className="flex gap-1 mt-1">
-                            {member.chapters.map((chapter, i) => (
-                              <Badge key={i} variant="outline" className="text-xs">
-                                {chapter}
-                              </Badge>
-                            ))}
-                          </div>
+                          <h3 className="font-medium">{member.name}</h3>
+                          <p className="text-xs text-muted-foreground">{member.chapter}</p>
                         </div>
                       </div>
-                    </CardContent>
-                  </Card>
-                ))}
-              </div>
-            </motion.div>
-            
-            {/* Available Rewards */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.4, delay: 0.4 }}
-            >
-              <div className="flex items-center justify-between mb-4">
-                <h2 className="text-xl font-semibold">Available Rewards</h2>
-                <Button variant="outline" size="sm">Browse All</Button>
-              </div>
-              
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                {rewards.map((reward, index) => (
-                  <Card key={index} className="overflow-hidden hover:shadow-md transition-shadow">
-                    <CardHeader className="pb-2">
-                      <div className="flex justify-between items-start">
-                        <CardTitle className="text-lg">{reward.title}</CardTitle>
-                        <Badge>{reward.credits} credits</Badge>
+                      <div className="font-bold text-primary">
+                        {member.credits} credits
                       </div>
-                      <CardDescription>{reward.description}</CardDescription>
-                    </CardHeader>
-                    <CardContent>
-                      <div className="flex justify-between items-center mt-2">
-                        <Badge variant="outline">{reward.tier} Tier</Badge>
-                        <Button variant="outline" size="sm">Redeem</Button>
-                      </div>
-                    </CardContent>
-                  </Card>
-                ))}
-              </div>
-            </motion.div>
-          </div>
-        </main>
-      </PageTransition>
-    </div>
+                    </div>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+          </TabsContent>
+        </Tabs>
+      </motion.div>
+    </PageLayout>
   );
 };
 
 // Sample data
-const recentActivity = [
+const creditOpportunities = [
   {
-    change: 50,
-    description: 'Organized Web Development Workshop',
-    date: 'Today'
+    title: "Web Development Workshop",
+    description: "Host a workshop to teach web development to beginners",
+    category: "Teaching",
+    credits: 100,
+    deadline: "Due in 2 weeks"
   },
   {
-    change: 25,
-    description: 'Attended Project Planning Meeting',
-    date: '2 days ago'
+    title: "Project Contribution",
+    description: "Contribute to the club's open source project",
+    category: "Development",
+    credits: 75,
+    deadline: "Ongoing"
   },
   {
-    change: -10,
-    description: 'Missed Executive Board Meeting',
-    date: '1 week ago'
+    title: "Tech Blog Article",
+    description: "Write a technical article for the club blog",
+    category: "Content",
+    credits: 50,
+    deadline: "Due in 1 month"
   },
   {
-    change: 30,
-    description: 'Uploaded Resource: React Hooks Guide',
-    date: '2 weeks ago'
+    title: "Mentorship Program",
+    description: "Mentor a junior member for a semester",
+    category: "Mentorship",
+    credits: 150,
+    deadline: "Next semester"
   }
 ];
 
-const topMembers = [
+const creditHistory = [
   {
-    name: 'John Doe',
-    credits: 780,
-    chapters: ['IEEE', 'ACM']
+    description: "Hosted Python Workshop",
+    date: "May 5, 2023",
+    amount: 100
   },
   {
-    name: 'Jane Smith',
-    credits: 720,
-    chapters: ['IEEE']
+    description: "Attended Leadership Meeting",
+    date: "May 3, 2023",
+    amount: 25
   },
   {
-    name: 'David Wilson',
-    credits: 680,
-    chapters: ['GDSC', 'ACM']
+    description: "Tech Blog Contribution",
+    date: "April 28, 2023",
+    amount: 50
   },
   {
-    name: 'Sarah Johnson',
-    credits: 640,
-    chapters: ['IEEE']
+    description: "Purchased Reward: Premium Course",
+    date: "April 20, 2023",
+    amount: -200
   },
   {
-    name: 'Michael Brown',
-    credits: 600,
-    chapters: ['ACM']
-  },
-  {
-    name: 'Emily Chen',
-    credits: 560,
-    chapters: ['GDSC']
+    description: "Project Collaboration",
+    date: "April 15, 2023",
+    amount: 75
   }
 ];
 
-const rewards = [
+const leaderboard = [
   {
-    title: 'Free Conference Ticket',
-    description: 'Get a free ticket to the annual tech conference',
-    credits: 500,
-    tier: 'Gold'
+    name: "Ananya Gupta",
+    chapter: "IEEE",
+    credits: 850
   },
   {
-    title: 'Tech Company Tour',
-    description: 'Visit a leading tech company headquarters',
-    credits: 350,
-    tier: 'Silver'
+    name: "Rajiv Kumar",
+    chapter: "ACM",
+    credits: 720
   },
   {
-    title: 'Workshop Priority Access',
-    description: 'Get early access to all workshop registrations',
-    credits: 200,
-    tier: 'Bronze'
+    name: "Priya Sharma",
+    chapter: "GDSC",
+    credits: 680
+  },
+  {
+    name: "Vikram Singh",
+    chapter: "IEEE",
+    credits: 625
+  },
+  {
+    name: "Neha Patel",
+    chapter: "ACM",
+    credits: 590
   }
 ];
 
