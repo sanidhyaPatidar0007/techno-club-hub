@@ -1,6 +1,7 @@
 
 import * as React from "react"
 import { useLocation } from "react-router-dom"
+import { useToast } from "@/components/ui/use-toast"
 
 const MOBILE_BREAKPOINT = 768
 
@@ -30,14 +31,29 @@ export function useMobileSidebar() {
   const [isOpen, setIsOpen] = React.useState(false)
   const isMobile = useIsMobile()
   const location = useLocation()
+  const { toast } = useToast()
   
   const toggleSidebar = React.useCallback(() => {
-    setIsOpen(prev => !prev)
-  }, [])
+    setIsOpen(prev => {
+      const newState = !prev
+      
+      // Only show toast on mobile when opening sidebar
+      if (isMobile && newState) {
+        toast({
+          title: "Sidebar opened",
+          description: "Tap outside or navigate to close"
+        })
+      }
+      
+      return newState
+    })
+  }, [isMobile, toast])
   
   const closeSidebar = React.useCallback(() => {
-    setIsOpen(false)
-  }, [])
+    if (isOpen) {
+      setIsOpen(false)
+    }
+  }, [isOpen])
   
   // This ensures the sidebar is properly closed when switching to mobile view
   React.useEffect(() => {

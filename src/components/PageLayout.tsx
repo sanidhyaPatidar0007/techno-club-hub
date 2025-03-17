@@ -1,5 +1,5 @@
 
-import { useState, ReactNode } from 'react';
+import { useState, ReactNode, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { useMobileSidebar } from '@/hooks/use-mobile';
 import Navbar from '@/components/Navbar';
@@ -22,11 +22,37 @@ const PageLayout = ({
   actions
 }: PageLayoutProps) => {
   const [sidebarExpanded, setSidebarExpanded] = useState(true);
-  const { isMobile, isOpen } = useMobileSidebar();
+  const { isMobile, isOpen, toggleSidebar } = useMobileSidebar();
 
-  const toggleSidebar = () => {
-    setSidebarExpanded(!sidebarExpanded);
+  const handleToggleSidebar = () => {
+    if (isMobile) {
+      toggleSidebar();
+    } else {
+      setSidebarExpanded(!sidebarExpanded);
+    }
   };
+
+  // Close sidebar when clicking outside on mobile
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (isMobile && isOpen) {
+        // Check if click is outside both sidebar and navbar
+        const sidebarEl = document.getElementById('sidebar');
+        const navbarEl = document.getElementById('navbar');
+        
+        if (sidebarEl && navbarEl) {
+          if (!sidebarEl.contains(e.target as Node) && !navbarEl.contains(e.target as Node)) {
+            toggleSidebar();
+          }
+        }
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [isMobile, isOpen, toggleSidebar]);
 
   // Determine if sidebar should be shown
   const showSidebar = isMobile ? isOpen : true;
@@ -41,7 +67,7 @@ const PageLayout = ({
     <div className={`min-h-screen bg-background bg-[url('${backgroundImage}')] bg-fixed bg-no-repeat bg-cover bg-opacity-10`}>
       <div className="min-h-screen bg-background/85 backdrop-blur-sm">
         <Navbar />
-        {showSidebar && <Sidebar isExpanded={sidebarExpanded} toggleSidebar={toggleSidebar} />}
+        {showSidebar && <Sidebar isExpanded={sidebarExpanded} toggleSidebar={handleToggleSidebar} />}
 
         <PageTransition>
           <main className={`pt-24 transition-all duration-300 ${mainClass}`}>
