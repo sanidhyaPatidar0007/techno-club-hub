@@ -37,6 +37,13 @@ export function useMobileSidebar() {
     setIsOpen(false)
   }, [])
   
+  // This ensures the sidebar is properly closed when switching to mobile view
+  React.useEffect(() => {
+    if (isMobile) {
+      setIsOpen(false)
+    }
+  }, [isMobile])
+  
   return {
     isOpen: isOpen && isMobile,
     isMobile,
