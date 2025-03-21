@@ -2,6 +2,7 @@
 import { useState, ReactNode, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { useMobileSidebar } from '@/hooks/use-mobile';
+import { useThemeByRoute } from '@/hooks/use-theme-by-route';
 import Navbar from '@/components/Navbar';
 import Sidebar from '@/components/Sidebar';
 import PageTransition from '@/components/PageTransition';
@@ -18,11 +19,15 @@ const PageLayout = ({
   children, 
   title, 
   description, 
-  backgroundImage = 'https://images.unsplash.com/photo-1506744038136-46273834b3fb?ixlib=rb-1.2.1&auto=format&fit=crop&w=1920&q=10',
+  backgroundImage, 
   actions
 }: PageLayoutProps) => {
   const [sidebarExpanded, setSidebarExpanded] = useState(true);
   const { isMobile, isOpen, toggleSidebar } = useMobileSidebar();
+  const routeTheme = useThemeByRoute();
+  
+  // Use provided backgroundImage or fall back to route-specific theme
+  const bgImage = backgroundImage || routeTheme.backgroundImage;
 
   const handleToggleSidebar = () => {
     if (isMobile) {
@@ -64,7 +69,7 @@ const PageLayout = ({
       : 'ml-0';
 
   return (
-    <div className={`min-h-screen bg-background bg-[url('${backgroundImage}')] bg-fixed bg-no-repeat bg-cover bg-opacity-10`}>
+    <div className={`min-h-screen bg-background bg-[url('${bgImage}')] bg-fixed bg-no-repeat bg-cover bg-opacity-10`}>
       <div className="min-h-screen bg-background/85 backdrop-blur-sm">
         <Navbar />
         {showSidebar && <Sidebar isExpanded={sidebarExpanded} toggleSidebar={handleToggleSidebar} />}
