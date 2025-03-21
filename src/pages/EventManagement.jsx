@@ -336,4 +336,3 @@ const pastEvents = [
 ];
 
 export default EventManagement;
-
