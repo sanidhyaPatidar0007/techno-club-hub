@@ -3,11 +3,22 @@ import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { useToast } from '@/components/ui/use-toast';
 
-const ImageGallery = ({ images, columns = 3 }) => {
-  const [selectedImage, setSelectedImage] = useState(null);
+interface ImageProps {
+  src: string;
+  alt: string;
+  caption?: string;
+}
+
+interface ImageGalleryProps {
+  images: ImageProps[];
+  columns?: number;
+}
+
+const ImageGallery = ({ images, columns = 3 }: ImageGalleryProps) => {
+  const [selectedImage, setSelectedImage] = useState<ImageProps | null>(null);
   const { toast } = useToast();
 
-  const handleImageClick = (image) => {
+  const handleImageClick = (image: ImageProps) => {
     setSelectedImage(image);
   };
 
@@ -15,7 +26,7 @@ const ImageGallery = ({ images, columns = 3 }) => {
     setSelectedImage(null);
   };
 
-  const handleShare = (image) => {
+  const handleShare = (image: ImageProps) => {
     toast({
       title: "Shared!",
       description: `${image.caption || image.alt} has been shared.`,

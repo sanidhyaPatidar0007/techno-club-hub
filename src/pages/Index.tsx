@@ -89,6 +89,8 @@ const Index = () => {
               </Button>
             </motion.div>
           </motion.div>
+          
+          {/* Hero image section removed */}
         </section>
         
         {/* Features section */}

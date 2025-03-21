@@ -15,11 +15,11 @@ const AuthForm = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [selectedClub, setSelectedClub] = useState('');
 
-  const handleClubChange = (value) => {
+  const handleClubChange = (value: string) => {
     setSelectedClub(value);
   };
 
-  const handleLogin = (e) => {
+  const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
     
     if (!selectedClub) {
@@ -37,7 +37,7 @@ const AuthForm = () => {
     }, 1500);
   };
 
-  const handleSignup = (e) => {
+  const handleSignup = (e: React.FormEvent) => {
     e.preventDefault();
     
     if (!selectedClub) {

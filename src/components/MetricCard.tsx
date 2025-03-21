@@ -4,6 +4,19 @@ import { motion } from 'framer-motion';
 import { cn } from '@/lib/utils';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 
+interface MetricCardProps {
+  title: string;
+  value: string | number;
+  icon?: ReactNode;
+  description?: string;
+  trend?: {
+    value: number;
+    isPositive: boolean;
+  };
+  delay?: number;
+  className?: string;
+}
+
 const MetricCard = ({
   title,
   value,
@@ -12,7 +25,7 @@ const MetricCard = ({
   trend,
   delay = 0,
   className
-}) => {
+}: MetricCardProps) => {
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
