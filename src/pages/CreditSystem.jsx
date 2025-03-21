@@ -48,23 +48,44 @@ const CreditSystem = () => {
                   </div>
                 </div>
                 
-                <div className="flex flex-wrap gap-4">
-                  <div className="flex-1 min-w-[200px] p-4 bg-blue-50 rounded-lg">
-                    <div className="flex items-center gap-2 mb-2">
-                      <TrendingUp className="h-5 w-5 text-blue-600" />
-                      <span className="font-medium">Total Credits</span>
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                  <div className="bg-muted/50 rounded-lg p-4">
+                    <div className="flex justify-between items-start mb-2">
+                      <div>
+                        <h3 className="font-medium text-sm">Current Rank</h3>
+                        <p className="text-2xl font-bold mt-1">Silver</p>
+                      </div>
+                      <span className="p-2 bg-blue-100 text-blue-700 rounded-full">
+                        <Award className="h-5 w-5" />
+                      </span>
                     </div>
-                    <div className="text-2xl font-bold text-blue-600">450</div>
-                    <div className="text-xs text-blue-600 mt-1">+50 last month</div>
+                    <p className="text-xs text-muted-foreground">Next: Gold (550 more credits)</p>
                   </div>
                   
-                  <div className="flex-1 min-w-[200px] p-4 bg-purple-50 rounded-lg">
-                    <div className="flex items-center gap-2 mb-2">
-                      <Award className="h-5 w-5 text-purple-600" />
-                      <span className="font-medium">Current Tier</span>
+                  <div className="bg-muted/50 rounded-lg p-4">
+                    <div className="flex justify-between items-start mb-2">
+                      <div>
+                        <h3 className="font-medium text-sm">Month Credits</h3>
+                        <p className="text-2xl font-bold mt-1">75</p>
+                      </div>
+                      <span className="p-2 bg-green-100 text-green-700 rounded-full">
+                        <TrendingUp className="h-5 w-5" />
+                      </span>
                     </div>
-                    <div className="text-2xl font-bold text-purple-600">Silver</div>
-                    <div className="text-xs text-purple-600 mt-1">550 more for Gold</div>
+                    <p className="text-xs text-muted-foreground">+18% from last month</p>
+                  </div>
+                  
+                  <div className="bg-muted/50 rounded-lg p-4">
+                    <div className="flex justify-between items-start mb-2">
+                      <div>
+                        <h3 className="font-medium text-sm">Total Credits</h3>
+                        <p className="text-2xl font-bold mt-1">450</p>
+                      </div>
+                      <span className="p-2 bg-purple-100 text-purple-700 rounded-full">
+                        <Clock className="h-5 w-5" />
+                      </span>
+                    </div>
+                    <p className="text-xs text-muted-foreground">Member for 8 months</p>
                   </div>
                 </div>
               </div>
@@ -77,35 +98,44 @@ const CreditSystem = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.3, delay: 0.1 }}
         >
-          <Card className="h-full">
+          <Card>
             <CardHeader>
-              <CardTitle>Quick Actions</CardTitle>
+              <CardTitle>Credit Rewards</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
-                <Button className="w-full justify-between" variant="outline">
-                  <span className="flex items-center">
-                    <Plus className="mr-2 h-4 w-4" />
-                    Claim Credits
-                  </span>
-                  <ArrowUpRight className="h-4 w-4" />
-                </Button>
+                <div className="flex items-center justify-between p-3 bg-muted/50 rounded-lg">
+                  <div>
+                    <Badge variant="outline" className="mb-1">500 Credits</Badge>
+                    <p className="font-medium">Workshop Priority Access</p>
+                  </div>
+                  <Button variant="ghost" size="sm" className="gap-1">
+                    <span className="text-xs">Claim</span>
+                    <ArrowUpRight className="h-3 w-3" />
+                  </Button>
+                </div>
                 
-                <Button className="w-full justify-between" variant="outline">
-                  <span className="flex items-center">
-                    <Award className="mr-2 h-4 w-4" />
-                    View Rewards
-                  </span>
-                  <ArrowUpRight className="h-4 w-4" />
-                </Button>
+                <div className="flex items-center justify-between p-3 bg-muted/50 rounded-lg">
+                  <div>
+                    <Badge variant="outline" className="mb-1">750 Credits</Badge>
+                    <p className="font-medium">Official Club T-Shirt</p>
+                  </div>
+                  <Button variant="ghost" size="sm" className="gap-1">
+                    <span className="text-xs">Claim</span>
+                    <ArrowUpRight className="h-3 w-3" />
+                  </Button>
+                </div>
                 
-                <Button className="w-full justify-between" variant="outline">
-                  <span className="flex items-center">
-                    <Clock className="mr-2 h-4 w-4" />
-                    Credit History
-                  </span>
-                  <ArrowUpRight className="h-4 w-4" />
-                </Button>
+                <div className="flex items-center justify-between p-3 bg-muted/50 rounded-lg">
+                  <div>
+                    <Badge variant="outline" className="mb-1">1000 Credits</Badge>
+                    <p className="font-medium">Leadership Program Access</p>
+                  </div>
+                  <Button variant="ghost" size="sm" className="gap-1">
+                    <span className="text-xs">Claim</span>
+                    <ArrowUpRight className="h-3 w-3" />
+                  </Button>
+                </div>
               </div>
             </CardContent>
           </Card>
@@ -117,75 +147,55 @@ const CreditSystem = () => {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.3, delay: 0.2 }}
       >
-        <Tabs defaultValue="opportunities">
-          <TabsList className="mb-4">
-            <TabsTrigger value="opportunities">Credit Opportunities</TabsTrigger>
-            <TabsTrigger value="history">Recent History</TabsTrigger>
-            <TabsTrigger value="leaderboard">Leaderboard</TabsTrigger>
+        <Tabs defaultValue="recent" className="w-full">
+          <TabsList className="w-full md:w-auto">
+            <TabsTrigger value="recent">Recent Activity</TabsTrigger>
+            <TabsTrigger value="challenges">Credit Challenges</TabsTrigger>
           </TabsList>
-          
-          <TabsContent value="opportunities" className="space-y-4">
+          <TabsContent value="recent">
             <Card>
-              <CardContent className="pt-6">
+              <CardHeader>
+                <CardTitle>Recent Credit Activity</CardTitle>
+              </CardHeader>
+              <CardContent>
                 <div className="space-y-4">
-                  {creditOpportunities.map((opportunity, index) => (
-                    <div key={index} className="flex justify-between items-center p-3 border rounded-lg hover:bg-gray-50 transition-colors">
-                      <div>
-                        <h3 className="font-medium">{opportunity.title}</h3>
-                        <p className="text-sm text-muted-foreground">{opportunity.description}</p>
-                        <div className="flex items-center gap-2 mt-1">
-                          <Badge variant="outline">{opportunity.category}</Badge>
-                          <span className="text-xs text-muted-foreground">{opportunity.deadline}</span>
-                        </div>
-                      </div>
-                      <div className="text-right">
-                        <div className="font-bold text-primary">{opportunity.credits} credits</div>
-                        <Button size="sm" variant="outline" className="mt-2">Details</Button>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </CardContent>
-            </Card>
-          </TabsContent>
-          
-          <TabsContent value="history">
-            <Card>
-              <CardContent className="pt-6">
-                <div className="space-y-4">
-                  {creditHistory.map((item, index) => (
-                    <div key={index} className="flex justify-between items-center p-3 border rounded-lg">
-                      <div>
-                        <h3 className="font-medium">{item.description}</h3>
-                        <p className="text-xs text-muted-foreground">{item.date}</p>
-                      </div>
-                      <div className={`font-bold ${item.amount > 0 ? 'text-green-600' : 'text-red-600'}`}>
-                        {item.amount > 0 ? `+${item.amount}` : item.amount} credits
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </CardContent>
-            </Card>
-          </TabsContent>
-          
-          <TabsContent value="leaderboard">
-            <Card>
-              <CardContent className="pt-6">
-                <div className="space-y-4">
-                  {leaderboard.map((member, index) => (
-                    <div key={index} className="flex justify-between items-center p-3 border rounded-lg">
-                      <div className="flex items-center">
-                        <div className="w-8 h-8 flex items-center justify-center bg-primary text-primary-foreground rounded-full font-bold mr-3">
-                          {index + 1}
+                  {recentActivity.map((activity, i) => (
+                    <div key={i} className="flex items-center justify-between border-b last:border-0 pb-4 last:pb-0">
+                      <div className="flex items-center gap-3">
+                        <div className={`p-2 rounded-full ${activity.type === 'earn' ? 'bg-green-100 text-green-600' : 'bg-amber-100 text-amber-600'}`}>
+                          {activity.type === 'earn' ? <TrendingUp className="h-4 w-4" /> : <ArrowUpRight className="h-4 w-4" />}
                         </div>
                         <div>
-                          <h3 className="font-medium">{member.name}</h3>
-                          <p className="text-xs text-muted-foreground">{member.chapter}</p>
+                          <p className="font-medium">{activity.description}</p>
+                          <p className="text-xs text-muted-foreground">{activity.date}</p>
                         </div>
                       </div>
-                      <div className="font-bold text-primary">
-                        {member.credits} credits
+                      <div className={`font-semibold ${activity.type === 'earn' ? 'text-green-600' : 'text-amber-600'}`}>
+                        {activity.type === 'earn' ? '+' : '-'}{activity.credits}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+          </TabsContent>
+          <TabsContent value="challenges">
+            <Card>
+              <CardHeader>
+                <CardTitle>Available Credit Challenges</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  {challenges.map((challenge, i) => (
+                    <div key={i} className="border rounded-lg p-4">
+                      <div className="flex justify-between items-start mb-3">
+                        <h3 className="font-semibold">{challenge.title}</h3>
+                        <Badge>{challenge.credits} Credits</Badge>
+                      </div>
+                      <p className="text-sm text-muted-foreground mb-4">{challenge.description}</p>
+                      <div className="flex justify-between items-center">
+                        <Badge variant="outline">{challenge.difficulty}</Badge>
+                        <Button size="sm">Start Challenge</Button>
                       </div>
                     </div>
                   ))}
@@ -200,90 +210,63 @@ const CreditSystem = () => {
 };
 
 // Sample data
-const creditOpportunities = [
+const recentActivity = [
   {
-    title: "Web Development Workshop",
-    description: "Host a workshop to teach web development to beginners",
-    category: "Teaching",
+    type: 'earn',
+    description: 'Workshop Attendance: React Basics',
+    date: 'Today at 3:45 PM',
+    credits: 25
+  },
+  {
+    type: 'earn',
+    description: 'Project Submission: Portfolio Website',
+    date: 'Yesterday at 6:20 PM',
+    credits: 50
+  },
+  {
+    type: 'spend',
+    description: 'Reward Redemption: Workshop Priority Access',
+    date: 'Jul 25, 2023',
+    credits: 100
+  },
+  {
+    type: 'earn',
+    description: 'Helping a Junior Member',
+    date: 'Jul 23, 2023',
+    credits: 15
+  },
+  {
+    type: 'earn',
+    description: 'Chapter Meeting Attendance',
+    date: 'Jul 20, 2023',
+    credits: 10
+  }
+];
+
+const challenges = [
+  {
+    title: 'Complete Node.js Course',
+    description: 'Finish the Node.js fundamentals course and implement a sample project.',
     credits: 100,
-    deadline: "Due in 2 weeks"
+    difficulty: 'Intermediate'
   },
   {
-    title: "Project Contribution",
-    description: "Contribute to the club's open source project",
-    category: "Development",
-    credits: 75,
-    deadline: "Ongoing"
-  },
-  {
-    title: "Tech Blog Article",
-    description: "Write a technical article for the club blog",
-    category: "Content",
-    credits: 50,
-    deadline: "Due in 1 month"
-  },
-  {
-    title: "Mentorship Program",
-    description: "Mentor a junior member for a semester",
-    category: "Mentorship",
+    title: 'Mentor a New Member',
+    description: 'Guide a new club member through their first project for at least 2 weeks.',
     credits: 150,
-    deadline: "Next semester"
-  }
-];
-
-const creditHistory = [
-  {
-    description: "Hosted Python Workshop",
-    date: "May 5, 2023",
-    amount: 100
+    difficulty: 'Easy'
   },
   {
-    description: "Attended Leadership Meeting",
-    date: "May 3, 2023",
-    amount: 25
+    title: 'Organize a Tech Workshop',
+    description: 'Plan and conduct a technical workshop on any technology topic.',
+    credits: 200,
+    difficulty: 'Hard'
   },
   {
-    description: "Tech Blog Contribution",
-    date: "April 28, 2023",
-    amount: 50
-  },
-  {
-    description: "Purchased Reward: Premium Course",
-    date: "April 20, 2023",
-    amount: -200
-  },
-  {
-    description: "Project Collaboration",
-    date: "April 15, 2023",
-    amount: 75
-  }
-];
-
-const leaderboard = [
-  {
-    name: "Ananya Gupta",
-    chapter: "IEEE",
-    credits: 850
-  },
-  {
-    name: "Rajiv Kumar",
-    chapter: "ACM",
-    credits: 720
-  },
-  {
-    name: "Priya Sharma",
-    chapter: "GDSC",
-    credits: 680
-  },
-  {
-    name: "Vikram Singh",
-    chapter: "IEEE",
-    credits: 625
-  },
-  {
-    name: "Neha Patel",
-    chapter: "ACM",
-    credits: 590
+    title: 'Open Source Contribution',
+    description: 'Make at least 3 contributions to any open source project.',
+    credits: 250,
+    difficulty: 'Advanced'
   }
 ];
 
