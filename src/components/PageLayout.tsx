@@ -24,6 +24,8 @@ const PageLayout = ({
 }: PageLayoutProps) => {
   const [sidebarExpanded, setSidebarExpanded] = useState(true);
   const { isMobile, isOpen, toggleSidebar } = useMobileSidebar();
+  
+  // Try to get route-specific theme, but fallback to default if not in Router context
   const routeTheme = useThemeByRoute();
   
   // Use provided backgroundImage or fall back to route-specific theme

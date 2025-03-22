@@ -23,14 +23,30 @@ interface SidebarProps {
 }
 
 const Sidebar = ({ isExpanded, toggleSidebar }: SidebarProps) => {
-  const location = useLocation();
-  const navigate = useNavigate();
   const [activeItem, setActiveItem] = useState('/dashboard');
   const { isMobile, closeSidebar } = useMobileSidebar();
+  
+  let location = { pathname: "/dashboard" };
+  let navigate = (path: string) => {
+    window.location.href = path;
+  };
+  let isRouterAvailable = true;
+
+  try {
+    // These will throw errors if not in a Router context
+    location = useLocation();
+    const navHook = useNavigate();
+    navigate = navHook;
+  } catch (error) {
+    isRouterAvailable = false;
+    console.warn("Sidebar: Not in a Router context");
+  }
 
   useEffect(() => {
-    setActiveItem(location.pathname);
-  }, [location.pathname]);
+    if (isRouterAvailable) {
+      setActiveItem(location.pathname);
+    }
+  }, [location.pathname, isRouterAvailable]);
 
   const handleNavigation = (path: string) => {
     navigate(path);
@@ -51,6 +67,7 @@ const Sidebar = ({ isExpanded, toggleSidebar }: SidebarProps) => {
 
   return (
     <aside 
+      id="sidebar"
       className={cn(
         "fixed left-0 top-16 h-[calc(100vh-4rem)] bg-sidebar z-40 border-r border-sidebar-border transition-all duration-300 ease-in-out",
         isExpanded ? "w-64" : "w-20",

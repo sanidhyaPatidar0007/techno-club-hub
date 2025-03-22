@@ -15,8 +15,18 @@ const Navbar = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
-  const location = useLocation();
   const { toggleSidebar, isOpen } = useMobileSidebar();
+  
+  let location = { pathname: "/" };
+  let isRouterAvailable = true;
+
+  try {
+    // This will throw an error if not in a Router context
+    location = useLocation();
+  } catch (error) {
+    isRouterAvailable = false;
+    console.warn("Navbar: Not in a Router context");
+  }
 
   useEffect(() => {
     const handleScroll = () => {
@@ -69,6 +79,7 @@ const Navbar = () => {
 
   return (
     <header
+      id="navbar"
       className={cn(
         "fixed top-0 left-0 right-0 z-50 transition-all duration-300",
         isScrolled 
@@ -103,7 +114,7 @@ const Navbar = () => {
                 to={item.path}
                 className={cn(
                   "nav-item",
-                  location.pathname === item.path && "nav-item-active"
+                  (isRouterAvailable && location.pathname === item.path) && "nav-item-active"
                 )}
               >
                 {item.name}
@@ -159,7 +170,7 @@ const Navbar = () => {
               to="/login" 
               className={cn(
                 "p-2 rounded-full transition-colors",
-                location.pathname !== '/login' 
+                (isRouterAvailable && location.pathname !== '/login') 
                   ? "text-gray-500 hover:text-gray-700 hover:bg-gray-100" 
                   : "text-primary hover:text-primary/90 hover:bg-gray-100"
               )}
@@ -198,7 +209,7 @@ const Navbar = () => {
               to={item.path}
               className={cn(
                 "w-full py-3 px-4 text-center rounded-md font-medium",
-                location.pathname === item.path
+                (isRouterAvailable && location.pathname === item.path)
                   ? "bg-primary/10 text-primary"
                   : "text-gray-600 hover:bg-gray-100 hover:text-gray-900"
               )}

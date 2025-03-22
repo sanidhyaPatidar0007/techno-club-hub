@@ -37,12 +37,23 @@ const routeThemes: Record<string, RouteTheme> = {
   },
 };
 
-export function useThemeByRoute(): RouteTheme {
-  const location = useLocation();
-  const defaultTheme: RouteTheme = {
-    backgroundImage: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?ixlib=rb-1.2.1&auto=format&fit=crop&w=1920&q=10",
-    accentColor: "bg-blue-500",
-  };
+// Default theme if not in router context or route not found
+const defaultTheme: RouteTheme = {
+  backgroundImage: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?ixlib=rb-1.2.1&auto=format&fit=crop&w=1920&q=10",
+  accentColor: "bg-blue-500",
+};
 
-  return routeThemes[location.pathname] || defaultTheme;
+export function useThemeByRoute(): RouteTheme {
+  let pathname = "/";
+  
+  try {
+    // This will throw an error if not in a Router context
+    const location = useLocation();
+    pathname = location.pathname;
+  } catch (error) {
+    console.warn("useThemeByRoute: Not in a Router context, using default theme");
+    // Continue with default theme
+  }
+
+  return routeThemes[pathname] || defaultTheme;
 }
