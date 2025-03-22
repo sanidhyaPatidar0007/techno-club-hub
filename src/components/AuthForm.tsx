@@ -1,6 +1,5 @@
-
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -10,16 +9,61 @@ import { ArrowRight, Mail, Lock, Github } from 'lucide-react';
 import { toast } from 'sonner';
 import { motion } from 'framer-motion';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { login, register } from '@/api/authService';
+import { fetchAllClubs } from '@/api/clubService';
+import { useEffect } from 'react';
 
 const AuthForm = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [selectedClub, setSelectedClub] = useState('');
+  const [clubs, setClubs] = useState([]);
+  const [loginForm, setLoginForm] = useState({
+    email: '',
+    password: ''
+  });
+  const [signupForm, setSignupForm] = useState({
+    fullName: '',
+    email: '',
+    password: ''
+  });
+  
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const getClubs = async () => {
+      try {
+        const clubData = await fetchAllClubs();
+        setClubs(clubData);
+      } catch (error) {
+        console.error('Error fetching clubs:', error);
+        toast.error('Failed to load clubs');
+      }
+    };
+    
+    getClubs();
+  }, []);
 
   const handleClubChange = (value: string) => {
     setSelectedClub(value);
   };
 
-  const handleLogin = (e: React.FormEvent) => {
+  const handleLoginChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { id, value } = e.target;
+    setLoginForm(prev => ({
+      ...prev,
+      [id.replace('login-', '')]: value
+    }));
+  };
+
+  const handleSignupChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { id, value } = e.target;
+    setSignupForm(prev => ({
+      ...prev,
+      [id.replace('signup-', '')]: value
+    }));
+  };
+
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     
     if (!selectedClub) {
@@ -29,15 +73,23 @@ const AuthForm = () => {
     
     setIsLoading(true);
     
-    // Simulate API call
-    setTimeout(() => {
+    try {
+      await login({
+        email: loginForm.email,
+        password: loginForm.password
+      });
+      
+      toast.success(`Successfully logged in!`);
+      navigate('/dashboard');
+    } catch (error) {
+      console.error('Login error:', error);
+      toast.error('Failed to login. Please check your credentials.');
+    } finally {
       setIsLoading(false);
-      toast.success(`Successfully logged in to ${selectedClub} club!`);
-      window.location.href = '/dashboard';
-    }, 1500);
+    }
   };
 
-  const handleSignup = (e: React.FormEvent) => {
+  const handleSignup = async (e: React.FormEvent) => {
     e.preventDefault();
     
     if (!selectedClub) {
@@ -47,21 +99,23 @@ const AuthForm = () => {
     
     setIsLoading(true);
     
-    // Simulate API call
-    setTimeout(() => {
+    try {
+      await register({
+        fullName: signupForm.fullName,
+        email: signupForm.email,
+        password: signupForm.password,
+        club: selectedClub
+      });
+      
+      toast.success(`Account created successfully!`);
+      navigate('/dashboard');
+    } catch (error) {
+      console.error('Signup error:', error);
+      toast.error('Failed to create account. Please try again.');
+    } finally {
       setIsLoading(false);
-      toast.success(`Account created successfully for ${selectedClub} club!`);
-      window.location.href = '/dashboard';
-    }, 1500);
+    }
   };
-
-  const clubs = [
-    { id: 'tech', name: 'Tech Innovators' },
-    { id: 'robotics', name: 'Robotics Club' },
-    { id: 'coding', name: 'Coding Masters' },
-    { id: 'design', name: 'Design Squad' },
-    { id: 'cyber', name: 'Cybersecurity Experts' },
-  ];
 
   return (
     <motion.div
@@ -100,21 +154,23 @@ const AuthForm = () => {
                   </Select>
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="email">Email</Label>
+                  <Label htmlFor="login-email">Email</Label>
                   <div className="relative">
                     <Mail className="absolute left-3 top-2.5 h-4 w-4 text-muted-foreground" />
                     <Input
-                      id="email"
+                      id="login-email"
                       placeholder="name@example.com"
                       type="email"
                       required
                       className="pl-10"
+                      value={loginForm.email}
+                      onChange={handleLoginChange}
                     />
                   </div>
                 </div>
                 <div className="space-y-2">
                   <div className="flex items-center justify-between">
-                    <Label htmlFor="password">Password</Label>
+                    <Label htmlFor="login-password">Password</Label>
                     <Link
                       to="/forgot-password"
                       className="text-sm font-medium text-primary hover:underline"
@@ -125,10 +181,12 @@ const AuthForm = () => {
                   <div className="relative">
                     <Lock className="absolute left-3 top-2.5 h-4 w-4 text-muted-foreground" />
                     <Input
-                      id="password"
+                      id="login-password"
                       type="password"
                       required
                       className="pl-10"
+                      value={loginForm.password}
+                      onChange={handleLoginChange}
                     />
                   </div>
                 </div>
@@ -206,6 +264,8 @@ const AuthForm = () => {
                     id="signup-name"
                     placeholder="John Doe"
                     required
+                    value={signupForm.fullName}
+                    onChange={handleSignupChange}
                   />
                 </div>
                 <div className="space-y-2">
@@ -218,6 +278,8 @@ const AuthForm = () => {
                       type="email"
                       required
                       className="pl-10"
+                      value={signupForm.email}
+                      onChange={handleSignupChange}
                     />
                   </div>
                 </div>
@@ -230,6 +292,8 @@ const AuthForm = () => {
                       type="password"
                       required
                       className="pl-10"
+                      value={signupForm.password}
+                      onChange={handleSignupChange}
                     />
                   </div>
                 </div>
