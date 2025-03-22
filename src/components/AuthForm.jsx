@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
@@ -15,11 +14,11 @@ const AuthForm = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [selectedClub, setSelectedClub] = useState('');
 
-  const handleClubChange = (value: string) => {
+  const handleClubChange = (value) => {
     setSelectedClub(value);
   };
 
-  const handleLogin = (e: React.FormEvent) => {
+  const handleLogin = (e) => {
     e.preventDefault();
     
     if (!selectedClub) {
@@ -37,7 +36,7 @@ const AuthForm = () => {
     }, 1500);
   };
 
-  const handleSignup = (e: React.FormEvent) => {
+  const handleSignup = (e) => {
     e.preventDefault();
     
     if (!selectedClub) {

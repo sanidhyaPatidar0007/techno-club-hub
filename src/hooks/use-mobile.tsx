@@ -30,18 +30,8 @@ export function useIsMobile() {
 export function useMobileSidebar() {
   const [isOpen, setIsOpen] = React.useState(false)
   const isMobile = useIsMobile()
+  const location = useLocation()
   const { toast } = useToast()
-  
-  let location = { pathname: "/" }
-  let isRouterAvailable = true
-  
-  try {
-    // This will throw an error if not in a Router context
-    location = useLocation()
-  } catch (error) {
-    isRouterAvailable = false
-    console.warn("useMobileSidebar: Not in a Router context")
-  }
   
   const toggleSidebar = React.useCallback(() => {
     setIsOpen(prev => {
@@ -77,10 +67,10 @@ export function useMobileSidebar() {
   
   // Close sidebar on route change in mobile view
   React.useEffect(() => {
-    if (isMobile && isRouterAvailable) {
+    if (isMobile) {
       closeSidebar()
     }
-  }, [location.pathname, isMobile, closeSidebar, isRouterAvailable])
+  }, [location.pathname, isMobile, closeSidebar])
   
   return {
     isOpen: isMobile ? isOpen : true,

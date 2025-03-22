@@ -1,12 +1,7 @@
 
-import { FC, ReactNode } from 'react';
 import { motion } from 'framer-motion';
 
-interface PageTransitionProps {
-  children: ReactNode;
-}
-
-const PageTransition: FC<PageTransitionProps> = ({ children }) => {
+const PageTransition = ({ children }) => {
   return (
     <motion.div
       initial={{ opacity: 0, y: 8 }}
