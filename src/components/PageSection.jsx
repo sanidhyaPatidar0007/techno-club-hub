@@ -1,15 +1,6 @@
 
-import { ReactNode } from 'react';
 import { motion } from 'framer-motion';
 import { cn } from '@/lib/utils';
-
-interface PageSectionProps {
-  children: ReactNode;
-  title?: string;
-  description?: string;
-  className?: string;
-  delay?: number;
-}
 
 const PageSection = ({ 
   children, 
@@ -17,7 +8,7 @@ const PageSection = ({
   description, 
   className,
   delay = 0
-}: PageSectionProps) => {
+}) => {
   return (
     <motion.section 
       className={cn("mb-8 rounded-lg border bg-card p-6 shadow-sm", className)}

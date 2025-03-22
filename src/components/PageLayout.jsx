@@ -1,5 +1,5 @@
 
-import { useState, ReactNode, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { useMobileSidebar } from '@/hooks/use-mobile';
 import { useThemeByRoute } from '@/hooks/use-theme-by-route';
@@ -7,21 +7,13 @@ import Navbar from '@/components/Navbar';
 import Sidebar from '@/components/Sidebar';
 import PageTransition from '@/components/PageTransition';
 
-interface PageLayoutProps {
-  children: ReactNode;
-  title: string;
-  description?: string;
-  backgroundImage?: string;
-  actions?: ReactNode;
-}
-
 const PageLayout = ({ 
   children, 
   title, 
   description, 
   backgroundImage, 
   actions
-}: PageLayoutProps) => {
+}) => {
   const [sidebarExpanded, setSidebarExpanded] = useState(true);
   const { isMobile, isOpen, toggleSidebar } = useMobileSidebar();
   const routeTheme = useThemeByRoute();
@@ -39,14 +31,14 @@ const PageLayout = ({
 
   // Close sidebar when clicking outside on mobile
   useEffect(() => {
-    const handleClickOutside = (e: MouseEvent) => {
+    const handleClickOutside = (e) => {
       if (isMobile && isOpen) {
         // Check if click is outside both sidebar and navbar
         const sidebarEl = document.getElementById('sidebar');
         const navbarEl = document.getElementById('navbar');
         
         if (sidebarEl && navbarEl) {
-          if (!sidebarEl.contains(e.target as Node) && !navbarEl.contains(e.target as Node)) {
+          if (!sidebarEl.contains(e.target) && !navbarEl.contains(e.target)) {
             toggleSidebar();
           }
         }

@@ -1,12 +1,7 @@
 
 import { useLocation } from "react-router-dom";
 
-type RouteTheme = {
-  backgroundImage: string;
-  accentColor: string;
-};
-
-const routeThemes: Record<string, RouteTheme> = {
+const routeThemes = {
   "/dashboard": {
     backgroundImage: "https://images.unsplash.com/photo-1531297484001-80022131f5a1?ixlib=rb-1.2.1&auto=format&fit=crop&w=1920&q=10",
     accentColor: "bg-blue-500",
@@ -37,9 +32,9 @@ const routeThemes: Record<string, RouteTheme> = {
   },
 };
 
-export function useThemeByRoute(): RouteTheme {
+export function useThemeByRoute() {
   const location = useLocation();
-  const defaultTheme: RouteTheme = {
+  const defaultTheme = {
     backgroundImage: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?ixlib=rb-1.2.1&auto=format&fit=crop&w=1920&q=10",
     accentColor: "bg-blue-500",
   };

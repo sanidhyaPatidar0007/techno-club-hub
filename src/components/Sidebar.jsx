@@ -17,12 +17,7 @@ import {
 import { cn } from '@/lib/utils';
 import { useMobileSidebar } from '@/hooks/use-mobile';
 
-interface SidebarProps {
-  isExpanded: boolean;
-  toggleSidebar: () => void;
-}
-
-const Sidebar = ({ isExpanded, toggleSidebar }: SidebarProps) => {
+const Sidebar = ({ isExpanded, toggleSidebar }) => {
   const location = useLocation();
   const navigate = useNavigate();
   const [activeItem, setActiveItem] = useState('/dashboard');
@@ -32,7 +27,7 @@ const Sidebar = ({ isExpanded, toggleSidebar }: SidebarProps) => {
     setActiveItem(location.pathname);
   }, [location.pathname]);
 
-  const handleNavigation = (path: string) => {
+  const handleNavigation = (path) => {
     navigate(path);
     if (isMobile) {
       closeSidebar();
